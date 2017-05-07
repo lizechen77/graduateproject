@@ -108,7 +108,12 @@ public class GraduateProjectREST {
     }
 
     //游客
-    @RequestMapping("findActivityInfo")
+    @RequestMapping(value = "findActivityInfo", method = RequestMethod.GET)
+    public ModelAndView findActivityInfo() {
+        return new ModelAndView("findActivityInfo");
+    }
+    
+    @RequestMapping(value = "findActivityInfo", method = RequestMethod.POST )
     public ModelAndView findActivityInfo(HttpServletRequest request){
         String activityName = request.getParameter("activityName");
         String locale = request.getParameter("locale");
