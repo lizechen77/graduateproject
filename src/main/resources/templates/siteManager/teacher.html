@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>teacher</title>
+	<link rel="stylesheet" href="../../code/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+</head>
+	<style>
+		th{
+			text-align:center;
+			vertical-align: middle!important;
+		}
+	</style>
+<body>
+	<!--  巨幕-->
+	<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
+		<div class="container">
+			<div class="col-md-1">
+			<img src="../../code/img/logo.png" th:src="@{img/logo.png}" class="pull-left" />
+			</div>
+			<div class="col-md-5">
+			
+			<h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+			</div>
+		</div>
+	</div>
+	<!--左侧导航-->
+	<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 130px 150px 0;height:100%;">
+		<li class="active" style="text-align:center;"><a href="#done" data-toggle="tab">已审批活动</a></li>
+		<li style="text-align:center;"><a href="#doing" data-toggle="tab">待审批活动</a></li>
+		<li style="text-align:center;"><a href="#add" data-toggle="tab">新增用户</a></li>
+	</ul>
+	<!--导航内容-->
+	<div class="tab-content" style="padding:40px 150px 150px 150px;">
+		<!--已审批活动-->
+		<div class="tab-pane active" id="done">
+			<div>
+				<table class="table table-bordered" style="margin:20px 0 0 0;width:80%;">
+					<thead>
+						<tr>
+							<th style="width:140px;">
+								申请编号
+							</th>
+
+							<th style="width:250px">
+								申请单位
+							</th>
+							<th style="width:300px">
+								活动名称
+							</th>
+							<th style="width:200px">
+								活动地点
+							</th>
+							<th style="width:200px">
+								活动时间
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th style="width:100px">
+								1
+							</th>
+
+							<th style="width:250px">
+								公共管理学院
+							</th>
+							<th style="width:300px">
+								<a href="#" style="color:#000000;">新生才艺大赛</a>
+							</th>
+							<th style="width:200px">
+								俱乐部
+							</th>
+							<th style="width:300px">
+								2016.12.5 19:00
+							</th>
+						</tr>
+						<tr>
+							<th style="width:100px">
+								1
+							</th>
+							<th style="width:250px">
+								公共管理学院
+							</th>
+							<th style="width:300px">
+								<a href="#" style="color:#000000;">新生才艺大赛</a>
+							</th>
+							<th style="width:200px">
+								俱乐部
+							</th>
+							<th style="width:300px">
+								2016.12.5 19:00
+							</th>	
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!--页码-->
+			<div>
+				<ul class="pagination">
+					<li><a href="#">&laquo;</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">&raquo;</a></li>
+				</ul>
+				<ul class="pager">
+					<li class="previous"><a href="#">上一页</a></li>
+					<li class="next"><a href="#">下一页</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--待审批活动-->
+		<div class="tab-pane" id="doing">
+			<div>
+				<table class="table table-bordered" style="margin:20px 0 0 0;width:80%;">
+					<thead>
+						<tr>
+							<th style="width:140px;">
+								申请编号
+							</th>
+
+							<th style="width:250px">
+								申请单位
+							</th>
+							<th style="width:300px">
+								活动名称
+							</th>
+							<th style="width:200px">
+								活动地点
+							</th>
+							<th style="width:200px">
+								活动时间
+							</th>
+							<th style="width:200px">
+								操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th style="width:100px">
+								1
+							</th>
+
+							<th style="width:250px">
+								公共管理学院
+							</th>
+							<th style="width:300px">
+								<a href="#" style="color:#000000;">新生才艺大赛</a>
+							</th>
+							<th style="width:200px">
+								俱乐部
+							</th>
+							<th style="width:300px">
+								2016.12.5 19:00
+							</th>
+							<th style="width:300px">
+								<button class="btn btn-success">批准</button>
+								<button class="btn btn-danger">不批准</button>
+							</th>
+						</tr>
+						<tr>
+							<th style="width:100px">
+								1
+							</th>
+
+							<th style="width:250px">
+								公共管理学院
+							</th>
+							<th style="width:300px">
+								<a href="#" style="color:#000000;">新生才艺大赛</a>
+							</th>
+							<th style="width:200px">
+								俱乐部
+							</th>
+							<th style="width:300px">
+								2016.12.5 19:00
+							</th>
+							<th style="width:300px">
+								<button class="btn btn-success">批准</button>
+								<button class="btn btn-danger">不批准</button>
+							</th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!--页码-->
+			<div>
+				<ul class="pagination">
+					<li><a href="#">&laquo;</a></li>
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">&raquo;</a></li>
+				</ul>
+				<ul class="pager">
+					<li class="previous"><a href="#">上一页</a></li>
+					<li class="next"><a href="#">下一页</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--新增用户-->
+		<div class="tab-pane" id="add" style="margin-top:50px;margin-left:400px;">
+			<div style="width:100%;margin:40px;">
+				<span>用户账号：</span>
+				<input type="text" />
+			</div>
+			<div style="width:100%;margin:40px;">
+				<span>用户密码：</span>
+				<input type="text" />
+			</div>
+			<div style="width:100%;margin:40px;">
+				<span>用户类型：</span>
+				<input type="text" />
+			</div>
+			<div style="width:100%;margin:40px;">
+				<span>用户名称：</span>
+				<input type="text" />
+			</div>
+			<br />
+			<div class="col-sm-offset-3">
+				<button type="text">提交</button>
+			</div>
+		</div>
+	</div>
+<script src="../../code/js/jquery.min.js" th:src="@{js/jquery.min.js}"></script>
+<script src="../../code/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+</body>
+</html>

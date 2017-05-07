@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>学生用户界面</title>
+    <link rel="stylesheet" th:href="@{../css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../css/bootstrap-datetimepicker.min.css}" />
+    <style>
+        th{
+            text-align:center;
+            vertical-align: middle!important;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;float:right;padding-right:40px;">
+       <span class="pull-right" ><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+       <span class="pull-right" th:text="'身份 : '+${session.roleID}">用户名&nbsp;&nbsp;</span>
+       <span class="pull-right" th:text="'用户名 : '+${session.userID}+', '">身份&nbsp;&nbsp;</span>
+    </div>
+<!--  巨幕-->
+<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
+    <div class="container">
+        <div class="col-md-1">
+            <img th:src="@{../img/logo.png}" class="pull-left" />
+        </div>
+        <div class="col-md-5">
+
+            <h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+        </div>
+    </div>
+</div>
+<!-- 左侧导航-->
+<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 100px 150px 0;height:790px;">
+    <li style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo}">活动查询</a></li>
+    <li style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
+    <li class="active" style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo(departmentID=${session.userID})}">审批状态</a></li>
+    <li style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
+</ul>
+<!--导航内容-->
+<div class="tab-content" style="padding:50px 0px 150px 0px;">
+    <!-- 查找活动信息-->
+    <div class="tab-pane active" id="search">
+        <!-- 搜索栏-->
+        <div>
+            <form th:action="@{/department/findSiteApplicationInfo}">
+                <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z" style="margin-left:80px">
+                    活动时间:
+                    <input size="23" type="text" th:name="begainTime1"/>
+                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+                    <span>--&nbsp;</span>
+                </div>
+
+                <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
+                    <input size="23" type="text" th:name="begainTime2" />
+                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+                </div>
+
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：</span>
+                <input size="15" type="text" th:name="locale" />
+                <button class="glyphicon glyphicon-search"></button>
+            </form>
+        </div>
+
+    <!-- 审批流程-->
+    <div class="tab-pane" id="plan" style="margin-left:400px;">
+        <h4>您已申请的活动：</h4>
+        <div>
+            <table class="table table-bordered" style="margin:30px 0 0 0;width:800px;">
+                <thead>
+                <tr>
+                    <th style="width:140px;">
+                        申请编号
+                    </th>
+
+                    <th style="width:250px">
+                        申请单位
+                    </th>
+                    <th style="width:300px">
+                        活动名称
+                    </th>
+                    <th style="width:200px">
+                        活动地点
+                    </th>
+                    <th style="width:200px">
+                        活动时间
+                    </th>
+                    <th style="width:200px">
+                        审批状态
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each= "siteApplicationInfoList,siteApplicationInfoListStat : ${siteApplicationInfoList}">
+                    <th style="width:100px" th:text="${siteApplicationInfoList.applicationID}">
+                        1
+                    </th>
+
+                    <th style="width:250px" th:text="${siteApplicationInfoList.departmentID}">
+                        公共管理学院
+                    </th>
+                    <th style="width:300px" th:text="${siteApplicationInfoList.activityName}">
+                        <a href="#" style="color:#000000;">新生才艺大赛</a>
+                    </th>
+                    <th style="width:200px" th:text="${siteApplicationInfoList.siteID}">
+                        俱乐部
+                    </th>
+                    <th style="width:300px" th:text="${siteApplicationInfoList.begainTime}">
+                        2016.12.5 19:00
+                    </th>
+                    <th style="width:200px" th:text="${siteApplicationInfoList.status}">
+                        未审批
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--页码-->
+        <div>
+            <nav style="margin-left:280px">
+                <ul class="pagination">
+                    <li><a href="#">&laquo;</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </nav>
+            <nav style="margin-right:140px">
+                <ul class="pager">
+                    <li><a href="#">上一页</a></li>
+                    <li><a href="#">下一页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    </div>
+</div>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+<script th:src="@{../js/bootstrap-datetimepicker.js}"></script>
+<script th:src="@{../js/locals/bootstrap-datetimepicker.fr.js}"></script>
+<script th:src="@{../js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{../js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $(".form_datetime").datetimepicker({
+        format: "yyyy-MM-dd hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10,
+        language:  'zh-CN'
+    });
+
+</script>
+</body>
+</html>

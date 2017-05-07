@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>departmentSearch</title>
+	<link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{css/bootstrap-datetimepicker.min.css}" />
+	<style>
+		th{
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<!--巨幕组件-->
+	<div class="jumbotron" style="background-color:#E4EEF9;">
+		<div class="container">
+			<div class="col-md-1">
+			<img src="img/logo.png" th:src="@{img/logo.png}" class="pull-left" />
+			</div>
+			<div class="col-md-4">
+			<br />
+			<p class="pull-left"><b>湘潭大学学生活动管理系统</b></p>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<!--搜索栏-->
+		<div style="margin-left:200px;">
+			<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
+				活动时间:
+			    <input size="23" type="text" />
+			    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+			    <span>--&nbsp;</span>				
+			</div>
+			<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
+				<input size="23" type="text" />
+				    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>				    
+			</div>
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：</span>
+			<input size="15" type="text" />
+		    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;活动内容：</span>
+			<input size="15" type="text" />
+		    <button class="glyphicon glyphicon-search"></button>
+		</div>
+		<!--表格内容-->
+		<table class="table table-bordered" style="margin:40px 180px;width:980px;">
+			<thead>
+				<tr>
+					<th style="width:100px;">
+						申请编号
+					</th>
+
+					<th style="width:250px">
+						申请单位
+					</th>
+					<th style="width:300px">
+						活动名称
+					</th>
+					<th style="width:200px">
+						活动地点
+					</th>
+					<th style="width:200px">
+						活动时间
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th style="width:100px">
+						1
+					</th>
+
+					<th style="width:250px">
+						公共管理学院
+					</th>
+					<th style="width:300px;">
+						<a href="#" style="color:#000000;">新生才艺大赛</a>
+					</th>
+					<th style="width:200px">
+						俱乐部
+					</th>
+					<th style="width:300px">
+						2016.12.5 19:00
+					</th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<!--页码-->
+	<div style="margin:400px">
+		<ul class="pagination">
+			<li><a href="#">&laquo;</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">&raquo;</a></li>
+		</ul>
+		<ul class="pager">
+			<li class="previous"><a href="#">上一页</a></li>
+			<li class="next"><a href="#">下一页</a></li>
+
+		</ul>
+	</div>
+<script src="../../code/js/jquery.min.js" th:src="@{js/jquery.min.js}"></script>
+<script src="../../code/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script src="../../code/js/bootstrap-datetimepicker.js" th:src="@{js/bootstrap-datetimepicker.js}"></script>
+<script src="../../code/js/locals/bootstrap-datetimepicker.fr.js" th:src="@{js/locals/bootstrap-datetimepicker.fr.js}"></script>
+<script src="../../code/js/bootstrap-datetimepicker.min.js" th:src="@{js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy - hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10
+    });
+</script> 
+</body>
+</html>

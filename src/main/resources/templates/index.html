@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>首页</title>
+	<link rel="stylesheet" href="../code/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
+	<style>
+		.carousel-inner .item{
+			margin:0 auto;
+			background-size:cover;
+			background-position:center,center;
+		}
+		.carousel-control{
+			font-size:100px;
+		}
+		#footer{
+			padding:20px;
+			text-align:center;
+			background-color:#eee;
+			border-top:1px solid #ccc;
+		}
+		.nav-pills{
+			width:105px;
+		}
+		ul.nav-pills{
+			top:30px;
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<!-- 巨幕-->
+	<div class="jumbotron" style="background-color:#E4EEF9;margin:0px">
+		<div class="container">
+			<div class="col-md-1">
+			<img th:src="@{img/logo.png}" class="pull-left" />
+			</div>
+			<div class="col-md-5">
+			<h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+			</div>
+		</div>
+	</div>
+	<!-- 轮播器-->
+	<div id="myCarousel" class="carousel slide" style="width:100%">
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active">
+			</li>
+			<li data-target="#myCarousel" data-slide-to="1">
+			</li>
+			<li data-target="#myCarousel" data-slide-to="2">
+			</li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="item active">
+				<a href="http://www.baidu.com" target="blank">
+					<img th:src="@{img/debate.jpg}" alt="第一张" />
+					<div class="carousel-caption">
+						<h3>你使用，我设计 ---第四届电子商务“创新、创意及创业”大赛决赛</h3>
+					</div>
+				</a>
+			</div>
+			<div class="item">
+				<a href="http://www.sina.com" target="blank">
+					<img th:src="@{img/activity.JPG}" alt="第二张" />
+					<div class="carousel-caption">
+						<h3>湘潭大学校园十佳歌手大赛</h3>
+					</div>
+				</a>
+			</div>
+			<div class="item">
+				<a href="http://www.hao123.com" target="blank">
+					<img th:src="@{img/1.JPG}" alt="第三张" />
+					<div class="carousel-caption">
+						<h3>商学院辩论赛</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+		<a href="#myCarousel" data-slide="prev" class="carousel-control left" style="line-height:500px">&lsaquo;</a>
+		<a href="#myCarousel" data-slide="next" class="carousel-control right" style="line-height:500px">&rsaquo;</a>
+	</div>
+	<br />
+	<!-- 活动分类框-->
+	<div style="margin-bottom:500px">
+		<!--第一个-->
+		<div class="panel panel-default col-md-3 col-md-offset-1"  style="margin:30px 20px 20px 80px;height:320px">
+			<div class="panel-heading">
+				<h3 class="glyphicon glyphicon-grain"> 文体活动</h3>    <!-- 表格标题-->
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#" style="color:#000000;">商学院第二十三届“挑战杯”辩论赛盛大开幕</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院新生才艺大赛</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">外国语学院英语演讲比赛</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
+
+			</ul>
+		</div>
+		<!--第二个-->
+		<div class="panel panel-default col-md-3" style="margin:30px 20px 20px 30px;height:320px">
+			<div class="panel-heading">
+			<h3 class="glyphicon glyphicon-duplicate"> 学术活动</h3>    <!-- 表格标题-->
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院 （第十届研究生学术文化节） 名师论坛第一场</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">【公管讲堂】段艳文：中国学术期刊转型与发展</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">外国语学院英语演讲比赛</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
+
+			</ul>
+		</div>
+		<!--第三个-->
+		<div class="panel panel-default col-md-3" style="margin:30px 20px 20px 30px;height:320px">
+			<div class="panel-heading">
+			<h3 class="glyphicon glyphicon-cd"> 娱乐活动</h3>       <!-- 表格标题-->
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#" style="color:#000000">商学院“Superstar”比赛启动</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院新生才艺大赛</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">声乐协会第十八届校园歌手大赛</a></li>
+				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
+			</ul>
+		</div>
+		<!--  右侧按钮-->
+		<div style="height:90px;margin:30px 0 0 0;" class="col-md-1 pull-right">
+			<ul class="nav nav-pills nav-stacked pull-right">
+				<li><a th:href="@{department/departmentSearch}">查询</a></li>
+				<li><a href="#"><span data-toggle="modal" data-target="#loginModal">用户登录</span></a></li>
+			</ul>
+			<!--用户登录框-->
+			<div id="loginModal" class="modal fade" tabindex="-1">
+				<div class="modal-dialog">
+				    <div class="modal-content">
+				    	<div class="modal-header">
+				        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+				        	<h1 class="text-center text-primary">登录</h1>
+				      	</div>
+
+				      	<div class="modal-footer" style="padding:32px">
+				        	<form th:action="@{/index}" class="form col-md-10 form-horizontal center-block" method="post">
+					          	<div class="form-group">
+					          		<label class="col-sm-4 control-label">账号</label>
+					          		<div class="col-sm-8">
+					           			<input type="text" class="form-control input-lg" th:name="userID" placeholder="登录账号" />
+					            	</div>
+					          	</div>
+					          	<div class="form-group">
+					          		<label class="col-sm-4 control-label">密码</label>
+					          		<div class="col-sm-8">
+					            		<input type="password" class="form-control input-lg" th:name="password" placeholder="登录密码" />
+					            	</div>
+					          	</div>
+
+					          
+					          	<div class="col-sm-3 col-md-offset-5">
+					          		<label>
+					          			<input type="radio" />学生组织
+					          		</label>
+					       	  	</div>
+					       	  	<div class="col-sm-3">
+					          		<label>
+					          			<input type="radio" />管理员
+					          		</label>
+					          	</div>
+					          	<div class="from-group">			          	
+						          	<div class="col-sm-7 col-md-offset-4" style="padding:20px">
+						            <button class="btn btn-primary btn-lg btn-block">立刻登录</button>
+						           </div>
+					            	<span class="col-sm-4 col-md-offset-7"><a href="#">找回密码</a></span>
+					          	</div>
+				        	</form>
+				    	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<footer id="footer" class="text-muted">
+			<div class="container">
+
+				<p>版权所有 © 湘潭大学. 地址：中国湖南湘潭. 邮编：411105. webmaster@xtu.edu.cn</p>
+				<p>湘ICP备05005862号 湘教QS3-200505-000059</p>
+			</div>
+		</footer>
+	</div>
+<script src="../code/js/jquery.min.js" th:src="@{js/jquery.min.js}"></script>
+<script src="../code/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+	$('#myCarousel').carousel({
+		interval:3000,
+		pause:'hover',
+		});
+</script>
+</body>
+</html>

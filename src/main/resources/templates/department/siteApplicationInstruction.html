@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>学生用户界面</title>
+    <link rel="stylesheet" th:href="@{../css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{../css/bootstrap-datetimepicker.min.css}" />
+    <style>
+        th{
+            text-align:center;
+            vertical-align: middle!important;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%;float:right;padding-right:40px;">
+        <span class="pull-right" ><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+        <span class="pull-right" th:text="'身份 : '+${session.roleID}+','">用户名&nbsp;&nbsp;</span>
+        <span class="pull-right" th:text="'用户名 : '+${session.userID}+','">身份&nbsp;&nbsp;</span>
+    </div>
+<!--  巨幕-->
+<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
+    <div class="container">
+        <div class="col-md-1">
+            <img th:src="@{../img/logo.png}" class="pull-left" />
+        </div>
+        <div class="col-md-5">
+
+            <h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+        </div>
+    </div>
+</div>
+<!-- 左侧导航-->
+<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 100px 150px 0;height:790px;">
+    <li style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo}">活动查询</a></li>
+    <li style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
+    <li style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo(departmentID=${session.userID})}">审批状态</a></li>
+    <li class="active" style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
+</ul>
+<!--导航内容-->
+<div class="tab-content" style="padding:50px 0px 150px 0px;">
+    <div class="tab-pane active" id="search">
+    <!--审批说明-->
+    <div class="tab-pane" id="explain" style="margin-right:50px">
+        <p class="text-center">欢迎大家来到大学生活动中心！</p>
+        <p class="text-center">为了方便大家更好地使用活动中心的场所，请您遵照以下有关规定：</p>
+        <h2 class="text-center">申请大学生活动中心场地须知</h2>
+        <p>一、申请时间</p>
+        <p>1、办理申请手续的时间为每工作日的上午。</p>
+        <p>2、使用单位应至少提前十天在系统上进行申请。</p>
+        <p>二、申请程序</p>
+        <p>1、网上申报。凡申请使用本中心场地须先进入未来网（http://youth.whu.edu.cn/hall/main.php）大学生活动中心使用信息平台，参照说明进行活动申报并下载《湘潭大学大学生活动中心使用审批表》。</p>
+        <p>2、填写表格。严格按照要求填写表格，若有不实之处取消审批资格。</p>
+        <p>3、领导审核。提交后由相关院系老师或指导老师以及各场地分管主任审批。</p>
+        <p>4、办理手续。将审批后的表格转交大学生活动中心主任处登记并领取场地使用审批条，然后将场地使用审批条交到相关场地管理员处，同时向管理员说明场地使用要求及开门时间。 </p>
+        <p>三、使用要求</p>
+        <p>1、活动内容。不得在活动中心从事与申请举办的活动内容不符的活动，不得变相在活动中心举办商业性活动，一经发现，立即终止活动，并视情节停止该单位对活动中心场地的使用。</p>
+        <p>2、设备使用。爱护活动中心现场的各种设备，未经管理人员同意，使用单位和个人不得擅自使用、操作设备，否则，将追究有关人员责任，如有损坏，照价赔偿。</p>
+        <p>3、安全管理。使用单位和参加活动的人员应高度重视现场安全保障，服从活动中心管理人员的现场管理，遇突发事件应协助管理人员做好紧急处理、人员疏散等工作。</p>
+        <p>4、卫生保持。自觉保持活动现场的环境卫生，使用完毕后使用单位及时组织人员清理现场。</p>
+        <p>四、学校各场地使用须知</p>
+        <p>1、严格按照申请程序进行申请。</p>
+        <p>2、各种报告、讲座等须报知主讲人的背景资料，报告内容。</p>
+        <p>3、联系人须提供学生证及有效联系方式备案。</p>
+        <p>4、联系人在和场地管理人员联系开门时须出示学生证。</p>
+        <p>5、管理人员核对场地使用内容、使用单位与管理单内容一致后，方可使用。否则管理人员有权停止场地的使用。</p>
+        <p>由于学生活动中心场地资源有限，学生活动十分频繁，为加强管理，提高效率，请广大同学严格遵守。</p>
+        <br />
+        <p>附：校团委副书记 李好 联系方式：68775318</p>
+        <p>活动中心主任 胡向宇 联系方式：68772012 15337270898</p>
+        <p>工学部、教五楼管理员 李师傅 联系方式：18971624988 </p>
+        <p>大学生俱乐部管理员 姜师傅 联系方式：13296538511</p>
+    </div>
+    </div>
+</div>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+<script th:src="@{../js/bootstrap-datetimepicker.js}"></script>
+<script th:src="@{../js/locals/bootstrap-datetimepicker.fr.js}"></script>
+<script th:src="@{../js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{../js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script type="text/javascript">
+
+    $(".form_datetime").datetimepicker({
+        format: "yyyy-MM-dd hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2013-02-14 10:00",
+        minuteStep: 10,
+        language:  'zh-CN'
+    });
+
+</script>
+</body>
+</html>
