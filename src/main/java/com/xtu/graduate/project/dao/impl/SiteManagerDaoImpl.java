@@ -22,7 +22,7 @@ import java.util.Map;
 public class SiteManagerDaoImpl implements SiteManagerDao{
     @Autowired
     JdbcTemplate jdbcTemplate;
-
+    public static final int pageSize = 10;
     @Override
     public Integer createUser(User user) {
         String userID = user.getUserID();
@@ -42,11 +42,23 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
     }
 
     @Override
-    public List<Map<String, Object>> findUnapprovedSiteApplication() {
-        String sql = "select * from siteApplication where status = '待审批'";
+    public List<Map<String, Object>> findUnapprovedSiteApplication(int pageNumber) {
+        String sql = "select * from siteApplication where status = '待审批' LIMIT ?,?";
         List<Map<String, Object>> list;
         try{
-            list = this.jdbcTemplate.queryForList(sql);
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+        }   catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return list;
+    }
+
+    @Override
+    public List<Map<String, Object>> findApprovedSiteApplication(int pageNumber) {
+        String sql = "select * from siteApplication where status <> '待审批' LIMIT ?,?";
+        List<Map<String, Object>> list;
+        try{
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
         }   catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -55,7 +67,7 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
 
     @Override
     public Integer approve(String applicationID, String status) {
-        String sql = "update siteApplication set status = ? where applicationID = ?";
+        String sql = "update siteApplication set status = ? where applicationID = ? LIMIT ?,?";
         int rows = this.jdbcTemplate.update(sql, new Object[]{status, applicationID});
         return rows;
     }

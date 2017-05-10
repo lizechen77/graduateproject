@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class SiteApplication {
     private Integer applicationID;
-    private Date begainTime;
+    private Date beginTime;
     private Date endTime;
     private String departmentID;
     private String siteManagerID;
@@ -24,12 +24,12 @@ public class SiteApplication {
         this.applicationID = applicationID;
     }
 
-    public Date getBegainTime() {
-        return begainTime;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setBegainTime(Date begainTime) {
-        this.begainTime = begainTime;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
     public Date getEndTime() {

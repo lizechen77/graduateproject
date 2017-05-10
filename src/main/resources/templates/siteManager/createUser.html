@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>teacher</title>
+    <link rel="stylesheet" href="../../code/css/bootstrap.min.css" th:href="@{../css/bootstrap.min.css}"/>
+</head>
+<style>
+    th{
+        text-align:center;
+        vertical-align: middle!important;
+    }
+</style>
+<body>
+<!--  巨幕-->
+<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
+    <div class="container">
+        <div class="col-md-1">
+            <img src="../../code/img/logo.png" th:src="@{../img/logo.png}" class="pull-left" />
+        </div>
+        <div class="col-md-5">
+
+            <h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+        </div>
+    </div>
+</div>
+<!--左侧导航-->
+<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 130px 150px 0;height:100%;">
+    <li style="text-align:center;"><a href="#done" th:href="@{/siteManager/findApprovedSiteApplication}">已审批活动</a></li>
+    <li style="text-align:center;"><a href="#doing" th:href="@{/siteManager/findUnapproveSiteApplication}">待审批活动</a></li>
+    <li class="active" style="text-align:center;"><a href="#add" th:href="@{/siteManager/createUser}">新增用户</a></li>
+</ul>
+<!--导航内容-->
+<div class="tab-content" style="padding:40px 150px 150px 150px;">
+    <!--未审批活动-->
+    <div class="tab-pane active" id="done">
+        
+        <!--新增用户-->
+        <form th:action="@{/siteManager/createUser}" method="post">
+        <div class="tab-pane" id="add" style="margin-top:50px;margin-left:400px;">
+            <div style="width:100%;margin:40px;">
+                <span>用户账号：</span>
+                <input type="text" th:name="userID" />
+            </div>
+            <div style="width:100%;margin:40px;">
+                <span>用户密码：</span>
+                <input type="text" th:name="password"/>
+            </div>
+            <div style="width:100%;margin:40px;">
+                <span>用户类型：</span>
+                <input type="text" th:name="roleID" />
+            </div>
+            <div style="width:100%;margin:40px;">
+                <span>用户名称：</span>
+                <input type="text" th:name="userName" />
+            </div>
+            <br />
+            <div class="col-sm-offset-3">
+                <button type="text">提交</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script src="../../code/js/jquery.min.js" th:src="@{../js/jquery.min.js}"></script>
+<script src="../../code/js/bootstrap.min.js" th:src="@{../js/bootstrap.min.js}"></script>
+</body>
+</html>

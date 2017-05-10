@@ -32,8 +32,13 @@ public class SiteManagerServiceImpl implements SiteManagerService {
     }
 
     @Override
-    public List<Map<String, Object>> findUnapproveSiteApplication() {
-        return this.siteManagerDao.findUnapprovedSiteApplication();
+    public List<Map<String, Object>> findUnapproveSiteApplication(int pageNumber) {
+        return this.siteManagerDao.findUnapprovedSiteApplication(pageNumber);
+    }
+
+    @Override
+    public List<Map<String, Object>> findApprovedSiteApplication(int pageNumber) {
+        return this.siteManagerDao.findApprovedSiteApplication(pageNumber);
     }
 
     @Override

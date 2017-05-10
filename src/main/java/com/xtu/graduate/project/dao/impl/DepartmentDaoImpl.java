@@ -23,15 +23,16 @@ import java.util.Map;
 @Repository
 public class DepartmentDaoImpl implements DepartmentDao{
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    public static final int pageSize = 10;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Map<String, Object>> findAllSiteApplication() {
-        String sql = "select * from siteApplication";
+    public List<Map<String, Object>> findAllSiteApplication(int pageNumber) {
+        String sql = "select * from siteApplication where status = '待审批' LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql);
+            list = jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -39,13 +40,13 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByLocale(String locale) {
-        String sql = "select ApplicationID, status, siteApplication.siteID, details, begainTime, " +
+    public List<Map<String, Object>> findSiteApplicationByLocale(String locale, int pageNumber) {
+        String sql = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
                 "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
-                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '审批未通过'";
+                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '待审批' LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{locale});
+            list = jdbcTemplate.queryForList(sql, new Object[]{locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -53,11 +54,11 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByBegainTime(Date begainTime1, Date begainTime2) {
-        String sql = "select * from siteApplication where begainTime between ? and ? and status = '审批未通过'";
+    public List<Map<String, Object>> findSiteApplicationByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql = "select * from siteApplication where beginTime between ? and ? and status = '待审批' LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{begainTime1, begainTime2});
+            list = jdbcTemplate.queryForList(sql, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -65,13 +66,14 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByLocaleAndBegainTime(String locale, Date begainTime1, Date begainTime2) {
-        String sql = "select ApplicationID, status, siteApplication.siteID, details, begainTime, " +
-                "endTime, departmentID, siteManagerID, activityName from siteapplication inner join siteInfo on " +
-                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and begainTime between ? and ?";
+    public List<Map<String, Object>> findSiteApplicationByLocaleAndBeginTime(String locale, Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
+                "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
+                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and beginTime between ? and ? " +
+                "and status = '待审批' LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{locale,begainTime1, begainTime2});
+            list = jdbcTemplate.queryForList(sql, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -79,12 +81,12 @@ public class DepartmentDaoImpl implements DepartmentDao{
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByDepartmentID(String departmentID) {
-        String sql = "select ApplicationID, status, siteID, details, begainTime, " +
-                "endTime, departmentID, siteManagerID, activityName from siteApplication where departmentID = ?";
+    public List<Map<String, Object>> findSiteApplicationByDepartmentID(String departmentID, int pageNumber) {
+        String sql = "select ApplicationID, status, siteID, details, beginTime, " +
+                "endTime, departmentID, siteManagerID, activityName from siteApplication where departmentID = ? LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{departmentID});
+            list = jdbcTemplate.queryForList(sql, new Object[]{departmentID, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -95,14 +97,14 @@ public class DepartmentDaoImpl implements DepartmentDao{
     public Integer createSiteApplication(SiteApplication siteApplication) {
         String siteID = siteApplication.getSiteID();
         String details = siteApplication.getDetails();
-        Date begainTime = siteApplication.getBegainTime();
+        Date beginTime = siteApplication.getBeginTime();
         Date    endTime = siteApplication.getEndTime();
         String departmentID = siteApplication.getDepartmentID();
         String siteManagerID = siteApplication.getSiteManagerID();
         String activityName = siteApplication.getActivityName();
-        String sql = "insert into siteApplication(status, siteID, details, begainTime, endTime, " +
+        String sql = "insert into siteApplication(status, siteID, details, beginTime, endTime, " +
                 "departmentID, siteManagerID, activityName) values('审批未通过', ?, ?, ?, ?, ? ,?, ?)";
-        int rows = jdbcTemplate.update(sql, new Object[] {siteID, details, begainTime, endTime,
+        int rows = jdbcTemplate.update(sql, new Object[] {siteID, details, beginTime, endTime,
         departmentID, siteManagerID, activityName});
         return rows;
     }

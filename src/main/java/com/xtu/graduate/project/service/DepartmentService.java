@@ -10,6 +10,6 @@ import java.util.Map;
  * Created by Administrator on 2017/5/1 0001.
  */
 public interface DepartmentService {
-    List<Map<String, Object>> findSiteApplicationInfo(String userID, String locale, Date begainTime1, Date begainTime2);
+    List<Map<String, Object>> findSiteApplicationInfo(String userID, String locale, Date beginTime1, Date beginTime2, int pageNumber);
     Integer createSiteApplication(SiteApplication siteApplication);
 }

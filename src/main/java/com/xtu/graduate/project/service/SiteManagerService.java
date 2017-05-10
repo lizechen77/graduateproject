@@ -12,6 +12,7 @@ import java.util.Map;
 public interface SiteManagerService {
     Integer createUser(User user);
     Integer deleteUserByUserID(String userID);
-    List<Map<String, Object>> findUnapproveSiteApplication();
+    List<Map<String, Object>> findUnapproveSiteApplication(int pageNumber);
+    List<Map<String, Object>> findApprovedSiteApplication(int pageNumber);
     Integer approve(String applicationID, String advice);
 }

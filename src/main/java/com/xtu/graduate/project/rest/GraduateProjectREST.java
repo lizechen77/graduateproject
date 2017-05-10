@@ -1,8 +1,5 @@
 package com.xtu.graduate.project.rest;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.xtu.graduate.project.dao.CommonDao;
-import com.xtu.graduate.project.domains.ActivityInfo;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.SiteInfo;
 import com.xtu.graduate.project.domains.User;
@@ -15,14 +12,13 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.crypto.hash.Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,10 +30,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/3/6 0006.
@@ -56,7 +49,7 @@ public class GraduateProjectREST {
     @Autowired
     CommonService commonService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     //@RequestMapping("/login")
     //public ModelAndView login() {
@@ -91,14 +84,16 @@ public class GraduateProjectREST {
         }
         LOGGER.info("authenticate success......");
         //mav.addObject("userID", userID);
-
-        if (currentUser.hasRole("student")) {
-            session.setAttribute("roleID", "student");
+        if (currentUser.hasRole("部门用户")) {
+            LOGGER.info("Department login");
+            session.setAttribute("roleID", "部门用户");
+            mav.setViewName("redirect:/department/findSiteApplicationInfo");
         }
-        if (currentUser.hasRole("teacher")) {
-            session.setAttribute("roleID", "teacher");
+        if (currentUser.hasRole("场地管理员")) {
+            LOGGER.info("Site Manager login");
+            session.setAttribute("roleID", "场地管理员");
+            mav.setViewName("redirect:/siteManager/findApprovedSiteApplication");
         }
-        mav.setViewName("redirect:/department/findSiteApplicationInfo");
         return mav;
     }
 
@@ -108,26 +103,32 @@ public class GraduateProjectREST {
     }
 
     //游客
-    @RequestMapping(value = "findActivityInfo", method = RequestMethod.GET)
-    public ModelAndView findActivityInfo() {
-        return new ModelAndView("findActivityInfo");
-    }
-    
-    @RequestMapping(value = "findActivityInfo", method = RequestMethod.POST )
+    @RequestMapping(value = "findActivityInfo")
     public ModelAndView findActivityInfo(HttpServletRequest request){
         String activityName = request.getParameter("activityName");
         String locale = request.getParameter("locale");
-        Date begainTime1;
-        Date begainTime2;
+        String tempBeginTime1 = request.getParameter("beginTime1");
+        String tempBeginTime2 = request.getParameter("beginTime2");
+        int pageNumber;
         try {
-            begainTime1 = sdf.parse(request.getParameter("begainTime1"));
-            begainTime2 = sdf.parse(request.getParameter("begainTime2"));
-        } catch (ParseException e) {
-            LOGGER.info("time format error......");
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        } catch (NumberFormatException e) {
+            LOGGER.info("pageNumber转换失败");
             return null;
         }
-        List<Map<String, Object>> list = this.userService.findActivityInfo(activityName, locale, begainTime1, begainTime2);
-        ModelAndView mav = new ModelAndView("activityInfo");
+        Date beginTime1 = null;
+        Date beginTime2 = null;
+        if (StringUtils.isNotBlank(tempBeginTime1) && StringUtils.isNotBlank(tempBeginTime2)) {
+            try {
+                beginTime1 = sdf.parse(tempBeginTime1);
+                beginTime2 = sdf.parse(tempBeginTime2);
+            } catch (ParseException e) {
+                LOGGER.info("time format error......");
+                return null;
+            }
+        }
+        List<Map<String, Object>> list = this.userService.findActivityInfo(activityName, locale, beginTime1, beginTime2, pageNumber);
+        ModelAndView mav = new ModelAndView("findActivityInfo");
         mav.addObject("activityList", list);
         return mav;
     }
@@ -150,10 +151,10 @@ public class GraduateProjectREST {
         }
         String siteManagerID = siteInfo.getSiteManagerID();
         SiteApplication siteApplication = new SiteApplication();
-        Date begainTime;
+        Date beginTime;
         Date endTime;
         try {
-            begainTime = sdf.parse(request.getParameter("begainTime"));
+            beginTime = sdf.parse(request.getParameter("beginTime"));
             endTime = sdf.parse(request.getParameter("endTime"));
         } catch (ParseException e) {
             LOGGER.info("time format error......");
@@ -162,7 +163,7 @@ public class GraduateProjectREST {
         siteApplication.setSiteManagerID(siteManagerID);
         siteApplication.setSiteID(request.getParameter("siteID"));
         siteApplication.setDetails(request.getParameter("details"));
-        siteApplication.setBegainTime(begainTime);
+        siteApplication.setBeginTime(beginTime);
         siteApplication.setEndTime(endTime);
         siteApplication.setDepartmentID(request.getParameter("departmentID"));
         int row = 0;
@@ -180,20 +181,27 @@ public class GraduateProjectREST {
     public ModelAndView findSiteApplicationInfo(HttpServletRequest request) {
         String departmentID = request.getParameter("departmentID");
         String locale = request.getParameter("locale");
-        String tempBegainTime1 = request.getParameter("begainTime1");
-        String tempBegainTime2 = request.getParameter("begainTime2");
-        Date begainTime1 = null;
-        Date begainTime2 = null;
-        if (StringUtils.isNotBlank(tempBegainTime1) && StringUtils.isNotBlank(tempBegainTime2)) {
+        String tempBeginTime1 = request.getParameter("beginTime1");
+        String tempBeginTime2 = request.getParameter("beginTime2");
+        Date beginTime1 = null;
+        Date beginTime2 = null;
+        if (StringUtils.isNotBlank(tempBeginTime1) && StringUtils.isNotBlank(tempBeginTime2)) {
             try {
-                begainTime1 = sdf.parse(tempBegainTime1);
-                begainTime2 = sdf.parse(tempBegainTime2);
+                beginTime1 = sdf.parse(tempBeginTime1);
+                beginTime2 = sdf.parse(tempBeginTime2);
             } catch (ParseException e) {
                 LOGGER.info("time format error......");
                 return null;
             }
         }
-        List<Map<String, Object>> list = this.departmentService.findSiteApplicationInfo(departmentID, locale, begainTime1, begainTime2);
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        } catch (NumberFormatException e) {
+            LOGGER.info("pageNumber转换失败");
+            return null;
+        }
+        List<Map<String, Object>> list = this.departmentService.findSiteApplicationInfo(departmentID, locale, beginTime1, beginTime2, pageNumber);
         ModelAndView mav;
         if (StringUtils.isBlank(departmentID)) {
             mav = new ModelAndView("department/findSiteApplicationInfo");
@@ -210,7 +218,28 @@ public class GraduateProjectREST {
     }
 
     //场地管理员
-    @RequestMapping("createUser")
+
+    @RequestMapping("siteManager/findUnapproveSiteApplication")
+    public ModelAndView siteManager(HttpServletRequest request) {
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        } catch (NumberFormatException e) {
+            LOGGER.info("pageNumber转换失败");
+            return null;
+        }
+        List<Map<String, Object>> list = this.siteManagerService.findUnapproveSiteApplication(pageNumber);
+        ModelAndView mav = new ModelAndView("siteManager/findUnapproveSiteApplication");
+        mav.addObject("siteApplicationInfoList", list);
+        return mav;
+    }
+
+    @RequestMapping(value = "siteManager/createUser", method = RequestMethod.GET)
+    public ModelAndView createUser() {
+        return new ModelAndView("siteManager/createUser");
+    }
+
+    @RequestMapping(value = "siteManager/createUser", method=RequestMethod.POST)
     public ModelAndView createUser(HttpServletRequest request) {
         User user = new User();
         user.setUserID(request.getParameter("userID"));
@@ -235,11 +264,18 @@ public class GraduateProjectREST {
         return new ModelAndView();
     }
 
-    @RequestMapping("findUnapproveSiteApplication")
-    public ModelAndView findUnapproveSiteApplication() {
-        List<Map<String, Object>> list = this.siteManagerService.findUnapproveSiteApplication();
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("list", list);
+    @RequestMapping("siteManager/findApprovedSiteApplication")
+    public ModelAndView findUnapproveSiteApplication(HttpServletRequest request) {
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        } catch (NumberFormatException e) {
+            LOGGER.info("pageNumber转换失败");
+            return null;
+        }
+        List<Map<String, Object>> list = this.siteManagerService.findApprovedSiteApplication(pageNumber);
+        ModelAndView mav = new ModelAndView("siteManager/findApprovedSiteApplication");
+        mav.addObject("siteApplicationInfoList", list);
         return mav;
     }
 

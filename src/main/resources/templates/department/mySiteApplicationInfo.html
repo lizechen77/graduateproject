@@ -46,13 +46,13 @@
             <form th:action="@{/department/findSiteApplicationInfo}">
                 <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z" style="margin-left:80px">
                     活动时间:
-                    <input size="23" type="text" th:name="begainTime1"/>
+                    <input size="23" type="text" th:name="beginTime1"/>
                     <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
                     <span>--&nbsp;</span>
                 </div>
 
                 <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
-                    <input size="23" type="text" th:name="begainTime2" />
+                    <input size="23" type="text" th:name="beginTime2" />
                     <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
                 </div>
 
@@ -105,7 +105,7 @@
                     <th style="width:200px" th:text="${siteApplicationInfoList.siteID}">
                         俱乐部
                     </th>
-                    <th style="width:300px" th:text="${siteApplicationInfoList.begainTime}">
+                    <th style="width:300px" th:text="${siteApplicationInfoList.beginTime}">
                         2016.12.5 19:00
                     </th>
                     <th style="width:200px" th:text="${siteApplicationInfoList.status}">
@@ -146,10 +146,10 @@
 <script type="text/javascript">
 
     $(".form_datetime").datetimepicker({
-        format: "yyyy-MM-dd hh:ii",
+        format: "yyyy-MM-dd hh:ii:ss",
         autoclose: true,
         todayBtn: true,
-        startDate: "2013-02-14 10:00",
+        startDate: "2017-02-14 10:00:00",
         minuteStep: 10,
         language:  'zh-CN'
     });

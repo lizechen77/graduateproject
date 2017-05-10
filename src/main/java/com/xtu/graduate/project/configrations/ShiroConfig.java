@@ -20,6 +20,7 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -44,27 +45,21 @@ public class ShiroConfig {
         bean.setSecurityManager(securityManager());
         bean.setLoginUrl("/index");
         bean.setUnauthorizedUrl("/unauthor");
-        Map<String, Filter> filters = new HashMap<String, Filter>();
-        filters.put("anon", new AnonymousFilter());
-        filters.put("authc", new FormAuthenticationFilter());
-        filters.put("logout", new LogoutFilter());
-        filters.put("roles", new RolesAuthorizationFilter());
-        filters.put("user", new UserFilter());
-        bean.setFilters(filters);
 
-        Map<String, String> chains = new HashMap<String, String>();
+        Map<String, String> chains = new LinkedHashMap<String, String>();
         chains.put("/test", "anon");
         chains.put("/index", "anon");
+        chains.put("/findActivityInfo", "anon");
         chains.put("/login", "anon");
-        chains.put("/unauthor", "anon");
         chains.put("/css/**", "anon");
         chains.put("/img/**", "anon");
         chains.put("/fonts/**", "anon");
         chains.put("/js/**", "anon");
         chains.put("/logout", "logout");
         chains.put("/permissionTest", "authc,roles[admin]");
-        chains.put("/department/**", "authc, roles[student]");
-        chains.put("/siteManager/**", "authc, roles[siteManager]");
+        chains.put("/department/**", "authc, roles[部门用户]");
+        chains.put("/siteManager/**", "authc, roles[场地管理员]");
+        chains.put("/unauthor", "anon");
         chains.put("/**", "user");
         bean.setFilterChainDefinitionMap(chains);
         return bean;
@@ -72,7 +67,7 @@ public class ShiroConfig {
 
     @Bean
     public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-        return new DefaultShiroFilterChainDefinition();
+        return new OrderedShiroFilterChainDefinition();
     }
 
 

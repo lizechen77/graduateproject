@@ -31,29 +31,29 @@ public class DepartmentServiceImpl implements DepartmentService {
     CommonDao commonDao;
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationInfo(String departmentID, String locale, Date begainTime1, Date begainTime2) {
+    public List<Map<String, Object>> findSiteApplicationInfo(String departmentID, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
         List<Map<String, Object>> list;
         if (StringUtils.isNotBlank(departmentID)) {
             LOGGER.info("Finding site application by departmentID......");
-            list = this.departmentDao.findSiteApplicationByDepartmentID(departmentID);
+            list = this.departmentDao.findSiteApplicationByDepartmentID(departmentID, pageNumber);
             return list;
         }
         if (StringUtils.isNotBlank(locale)) {
-            if(begainTime1 != null && begainTime2 != null) {
-                LOGGER.info("Finding site application by locale and begainTime......");
-                list = this.departmentDao.findSiteApplicationByLocaleAndBegainTime(locale, begainTime1, begainTime2);
+            if(beginTime1 != null && beginTime2 != null) {
+                LOGGER.info("Finding site application by locale and beginTime......");
+                list = this.departmentDao.findSiteApplicationByLocaleAndBeginTime(locale, beginTime1, beginTime2, pageNumber);
                 return list;
             }
             LOGGER.info("Finding site application by locale......");
-            list = this.departmentDao.findSiteApplicationByLocale(locale);
+            list = this.departmentDao.findSiteApplicationByLocale(locale, pageNumber);
             return list;
         }
-        if (begainTime1 != null && begainTime2 != null) {
-            LOGGER.info("Finding site application by begainTime......");
-            list = this.departmentDao.findSiteApplicationByBegainTime(begainTime1, begainTime2);
+        if (beginTime1 != null && beginTime2 != null) {
+            LOGGER.info("Finding site application by beginTime......");
+            list = this.departmentDao.findSiteApplicationByBeginTime(beginTime1, beginTime2, pageNumber);
             return list;
         }
-        list = this.departmentDao.findAllSiteApplication();
+        list = this.departmentDao.findAllSiteApplication(pageNumber);
         return list;
     }
 

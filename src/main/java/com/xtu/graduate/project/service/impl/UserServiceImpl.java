@@ -6,6 +6,8 @@ import com.xtu.graduate.project.domains.Role;
 import com.xtu.graduate.project.domains.SiteInfo;
 import com.xtu.graduate.project.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,36 +24,45 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
 
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
-    public List<Map<String, Object>> findActivityInfo(String activityName, String locale, Date begainTime1, Date begainTime2) {
+    public List<Map<String, Object>> findActivityInfo(String activityName, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
         List<Map<String, Object>> list;
         //activityName不为空
         if (StringUtils.isNotBlank(activityName)) {
             if(StringUtils.isNotBlank(locale)) {
-                list = this.userDao.findActivityInfoByActivityNameAndLocale(activityName, locale);
+                LOGGER.info("Find activityInfo by activityName and locale");
+                list = this.userDao.findActivityInfoByActivityNameAndLocale(activityName, locale, pageNumber);
             }
-            if (begainTime1 != null && begainTime2 != null) {
-                list = this.userDao.findActivityInfoByActivityNameAndBegainTime(activityName, begainTime1, begainTime2);
+            if (beginTime1 != null && beginTime2 != null) {
+                LOGGER.info("Find activityInfo by activityName and beginTime");
+                list = this.userDao.findActivityInfoByActivityNameAndBeginTime(activityName, beginTime1, beginTime2, pageNumber);
             }
-            if (StringUtils.isNotBlank(activityName) && begainTime1 != null && begainTime2 != null) {
-                list = this.userDao.findActivityInfoByActivityNameAndLocaleAndBegainTime(activityName, locale, begainTime1, begainTime2);
+            if (StringUtils.isNotBlank(activityName) && beginTime1 != null && beginTime2 != null) {
+                LOGGER.info("Find activityInfo by activityName and beginTime and locale");
+                list = this.userDao.findActivityInfoByActivityNameAndLocaleAndBeginTime(activityName, locale, beginTime1, beginTime2, pageNumber);
             }
-            list = this.userDao.findActivityInfoByActivityName(activityName);
+            LOGGER.info("Find activityInfo by activityName");
+            list = this.userDao.findActivityInfoByActivityName(activityName, pageNumber);
         }
         //activityName为空，locale不为空
         if (StringUtils.isNotBlank(locale)) {
-            if (begainTime1 != null && begainTime2 != null) {
-                list = this.userDao.findActivityInfoByLocaleAndBegainTime(locale, begainTime1, begainTime2);
+            if (beginTime1 != null && beginTime2 != null) {
+                LOGGER.info("Find activityInfo by locale and beginTime");
+                list = this.userDao.findActivityInfoByLocaleAndBeginTime(locale, beginTime1, beginTime2, pageNumber);
             }
-            list = this.userDao.findActivityInfoByLocale(locale);
+            LOGGER.info("Find activityInfo by locale");
+            list = this.userDao.findActivityInfoByLocale(locale, pageNumber);
         }
-        //activityName,locale为空，begainTime不为空
-        if (begainTime1 != null && begainTime2 != null) {
-            list = this.userDao.findActivityInfoByBegainTime(begainTime1, begainTime2);
+        //activityName,locale为空，beginTime不为空
+        if (beginTime1 != null && beginTime2 != null) {
+            LOGGER.info("Find activityInfo by beginTime");
+            list = this.userDao.findActivityInfoByBeginTime(beginTime1, beginTime2, pageNumber);
         }
-        //activityName,locale,begainTime都为空
-        return null;
+        //activityName,locale,beginTime都为空
+        LOGGER.info("Find all activityInfo");
+        list = this.userDao.findAllActivityInfo(pageNumber);
+        return list;
     }
 
 }

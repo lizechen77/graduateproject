@@ -25,19 +25,23 @@ import java.util.Map;
 @Repository
 public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    public static final int pageSize = 10;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
 
     //通过activityName查找activityInfo
     @Override
-    public List<Map<String,Object>> findActivityInfoByActivityName(String activityName) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from activityInfo inner join user on activityInfo.departmentID" +
-                " = user.userID where user.activityName = ?";
+    public List<Map<String,Object>> findActivityInfoByActivityName(String activityName, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list =  jdbcTemplate.queryForList(sql, new Object[]{activityName});
+            list =  jdbcTemplate.queryForList(sql, new Object[]{activityName, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -46,29 +50,34 @@ public class UserDaoImpl implements UserDao {
 
     //通过locale查找activityInfo
     @Override
-    public List<Map<String,Object>> findActivityInfoByLocale(String locale) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from activityInfo inner join siteInfo on activityInfo.siteID = " +
-                "siteInfo.siteID where siteInfo.locale = ?";
+    public List<Map<String,Object>> findActivityInfoByLocale(String locale, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale =?)" +
+                "inner join user on activityInfo.departmentID = user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{locale});
+            list = jdbcTemplate.queryForList(sql, new Object[]{locale,  (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return list;
     }
 
-    //通过begainTime查找activityInfo
+    //通过beginTime查找activityInfo
     @Override
-    public List<Map<String,Object>> findActivityInfoByBegainTime(Date begainTime1, Date begainTime2) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where " +
-                "siteApplication.begainTime between ? and ?";
+    public List<Map<String,Object>> findActivityInfoByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where beginTime between ? and ?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{begainTime1, begainTime2 });
+            list = jdbcTemplate.queryForList(sql, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -77,70 +86,95 @@ public class UserDaoImpl implements UserDao {
 
     //通过activityName和locale查找activityInfo
     @Override
-    public List<Map<String, Object>> findActivityInfoByActivityNameAndLocale(String activityName, String locale) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from (activityInfo inner join user on activityInfo.departmentID" +
-                " = user.userID where user.activityName = ?)  inner join siteInfo on " +
-                "activityInfo.siteID = siteInfo.siteID where siteInfo.locale = ?";
+    public List<Map<String, Object>> findActivityInfoByActivityNameAndLocale(String activityName, String locale, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where siteInfo.locale=?)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{activityName, locale});
+            list = jdbcTemplate.queryForList(sql, new Object[]{activityName, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return list;
     }
 
-    //通过activityName和begainTime查找activityInfo
+    //通过activityName和beginTime查找activityInfo
     @Override
-    public List<Map<String, Object>> findActivityInfoByActivityNameAndBegainTime(String activityName,
-                                                                                 Date begainTime1, Date begainTime2) {
-        String sql = "select siteInfo.siteID,activityInfo.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from activityInfo inner join siteApplication on activityInfo.applicationID = " +
-                "siteApplication.applicationID where activityName = ? and begainTime between ? and ?";
+    public List<Map<String, Object>> findActivityInfoByActivityNameAndBeginTime(String activityName,
+                                                                                 Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
+                "and beginTime between ? and ?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{activityName, begainTime1, begainTime2});
+            list = jdbcTemplate.queryForList(sql, new Object[]{activityName, beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return list;
     }
 
-    //通过locale和begainTime查找activityInfo
+    //通过locale和beginTime查找activityInfo
     @Override
-    public List<Map<String, Object>> findActivityInfoByLocaleAndBegainTime(String locale, Date begainTime1,Date begainTime2) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from (activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where " +
-                "siteApplication.begainTime between ? and ?) inner join siteInfo on activityInfo.siteID = " +
-                "siteInfo.siteID where siteInfo.locale = ?;";
+    public List<Map<String, Object>> findActivityInfoByLocaleAndBeginTime(String locale, Date beginTime1,Date beginTime2, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where beginTime between ? and ?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{begainTime1, begainTime2, locale});
+            list = jdbcTemplate.queryForList(sql, new Object[]{beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return list;
     }
 
-    //通过activityName和locale和begainTime查找activityInfo
+    //通过activityName和locale和beginTime查找activityInfo
     @Override
-    public List<Map<String, Object>> findActivityInfoByActivityNameAndLocaleAndBegainTime(String activityName, String locale, Date begainTime1, Date begainTime2) {
-        String sql = "select siteInfo.siteID,siteApplication.applicationID,activityInfo.departmentID," +
-                "activityInfo.activityID from ( inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where " +
-                "activityName = ? and begainTime between ? and ?) inner join siteInfo on activityInfo.siteID = " +
-                "siteInfo.siteID where siteInfo.locale = ?";
+    public List<Map<String, Object>> findActivityInfoByActivityNameAndLocaleAndBeginTime(String activityName, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
+                "and beginTime between ? and ?)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
         List<Map<String, Object>> list;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{activityName, begainTime1, begainTime2, locale});
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{activityName, beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return list;
     }
 
+    @Override
+    public List<Map<String, Object>> findAllActivityInfo(int pageNumber) {
+        String sql = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
+                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
+                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID LIMIT ?,?";
+        List<Map<String, Object>> list;
+        try {
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return list;
+    }
 
 
 }

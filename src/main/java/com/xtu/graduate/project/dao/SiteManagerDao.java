@@ -12,6 +12,7 @@ import java.util.Map;
 public interface SiteManagerDao {
     Integer createUser(User user);
     Integer deleteUser(String UserID);
-    List<Map<String, Object>> findUnapprovedSiteApplication();
+    List<Map<String, Object>> findUnapprovedSiteApplication(int pageNumber);
+    List<Map<String, Object>> findApprovedSiteApplication(int pageNumber);
     Integer approve(String applicationID, String status);
 }

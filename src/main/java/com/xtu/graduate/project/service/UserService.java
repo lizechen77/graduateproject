@@ -13,6 +13,6 @@ import java.util.Map;
  */
 public interface UserService {
     //departmentID改为活动名称activityName
-    List<Map<String, Object>> findActivityInfo(String activityName, String locale, Date begainTime1, Date begainTime2);
+    List<Map<String, Object>> findActivityInfo(String activityName, String locale, Date beginTime1, Date beginTime2, int pageNumber);
 
 }
