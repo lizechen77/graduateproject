@@ -1,6 +1,7 @@
 package com.xtu.graduate.project.dao.impl;
 
 import com.xtu.graduate.project.dao.SiteManagerDao;
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,27 +43,51 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
     }
 
     @Override
-    public List<Map<String, Object>> findUnapprovedSiteApplication(int pageNumber) {
-        String sql = "select * from siteApplication where status = '待审批' LIMIT ?,?";
+    public CurrentPage findUnapprovedSiteApplication(int pageNumber) {
+        String sql1 = "select * from siteApplication where status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteApplication where status = '待审批' ";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try{
-            list = this.jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         }   catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override
-    public List<Map<String, Object>> findApprovedSiteApplication(int pageNumber) {
-        String sql = "select * from siteApplication where status <> '待审批' LIMIT ?,?";
+    public CurrentPage findApprovedSiteApplication(int pageNumber) {
+        String sql1 = "select * from siteApplication where status <> '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteApplication where status <> '待审批'";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try{
-            list = this.jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         }   catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override

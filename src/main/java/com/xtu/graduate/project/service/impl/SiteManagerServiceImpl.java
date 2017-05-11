@@ -1,6 +1,7 @@
 package com.xtu.graduate.project.service.impl;
 
 import com.xtu.graduate.project.dao.SiteManagerDao;
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.User;
 import com.xtu.graduate.project.service.SiteManagerService;
@@ -32,12 +33,12 @@ public class SiteManagerServiceImpl implements SiteManagerService {
     }
 
     @Override
-    public List<Map<String, Object>> findUnapproveSiteApplication(int pageNumber) {
+    public CurrentPage findUnapproveSiteApplication(int pageNumber) {
         return this.siteManagerDao.findUnapprovedSiteApplication(pageNumber);
     }
 
     @Override
-    public List<Map<String, Object>> findApprovedSiteApplication(int pageNumber) {
+    public CurrentPage findApprovedSiteApplication(int pageNumber) {
         return this.siteManagerDao.findApprovedSiteApplication(pageNumber);
     }
 

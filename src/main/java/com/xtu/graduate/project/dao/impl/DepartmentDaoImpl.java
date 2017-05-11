@@ -2,6 +2,7 @@ package com.xtu.graduate.project.dao.impl;
 
 import com.xtu.graduate.project.dao.DepartmentDao;
 import com.xtu.graduate.project.domains.ActivityInfo;
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,69 +29,135 @@ public class DepartmentDaoImpl implements DepartmentDao{
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Map<String, Object>> findAllSiteApplication(int pageNumber) {
-        String sql = "select * from siteApplication where status = '待审批' LIMIT ?,?";
+    public CurrentPage findAllSiteApplication(int pageNumber) {
+        String sql1 = "select * from siteApplication where status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteApplication where status = '待审批'";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByLocale(String locale, int pageNumber) {
-        String sql = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
+    public CurrentPage findSiteApplicationByLocale(String locale, int pageNumber) {
+        String sql1 = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
                 "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteapplication inner join siteInfo on " +
+                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '待审批'";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql = "select * from siteApplication where beginTime between ? and ? and status = '待审批' LIMIT ?,?";
+    public CurrentPage findSiteApplicationByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql1 = "select * from siteApplication where beginTime between ? and ? and status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteApplication where beginTime between ? and ? and status = '待审批'";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{beginTime1, beginTime2}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByLocaleAndBeginTime(String locale, Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
+    public CurrentPage findSiteApplicationByLocaleAndBeginTime(String locale, Date beginTime1, Date beginTime2, int pageNumber) {
+        String sql1 = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
                 "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and beginTime between ? and ? " +
                 "and status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from siteapplication inner join siteInfo on " +
+                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and beginTime between ? and ? " +
+                "and status = '待审批' ";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale,beginTime1, beginTime2}, Integer.class);
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationByDepartmentID(String departmentID, int pageNumber) {
-        String sql = "select ApplicationID, status, siteID, details, beginTime, " +
-                "endTime, departmentID, siteManagerID, activityName from siteApplication where departmentID = ? LIMIT ?,?";
+    public CurrentPage findSiteApplicationByDepartmentID(String departmentID, int pageNumber) {
+        String sql1 = "select ApplicationID, status, siteID, details, beginTime, " +
+                "endTime, departmentID, siteManagerID, activityName from siteApplication " +
+                "where departmentID = ? LIMIT ?,?";
+        String sql2 = "select count(*) from siteApplication " +
+                "where departmentID = ?";
         List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql, new Object[]{departmentID, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{departmentID, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{departmentID}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return list;
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 
     @Override

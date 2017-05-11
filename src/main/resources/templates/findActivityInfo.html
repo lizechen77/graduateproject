@@ -69,7 +69,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each= "activityList,activityListStat : ${activityList}">
+				<tr th:each= "activityList, activityListStat : ${page.getList()}">
 					<th style="width:100px" th:text="${activityList.activityID}">
 						1
 					</th>
@@ -91,19 +91,9 @@
 		</table>
 	</div>
 	<!--页码-->
-	<div style="margin:400px">
+	<div style="margin:0 auto">
 		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">&raquo;</a></li>
-		</ul>
-		<ul class="pager">
-			<li class="previous"><a href="#">上一页</a></li>
-			<li class="next"><a href="#">下一页</a></li>
-
+			<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}" th:text="${i}"><a href="#">1</a></li>
 		</ul>
 	</div>
 <script src="../../code/js/jquery.min.js" th:src="@{js/jquery.min.js}"></script>
@@ -114,10 +104,10 @@
 	<script th:src="@{../js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
 	<script type="text/javascript">
         $(".form_datetime").datetimepicker({
-            format: "yyyy-MM-dd hh:ii",
+            format: "yyyy-MM-dd hh:ii:ss",
             autoclose: true,
             todayBtn: true,
-            startDate: "2013-02-14 10:00",
+            startDate: "2013-02-14 10:00:00",
             minuteStep: 10,
             language:  'zh-CN'
         });

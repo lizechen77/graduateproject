@@ -63,7 +63,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="siteApplicationInfoList,siteApplicationInfoListStat : ${siteApplicationInfoList}">
+						<tr th:each="siteApplicationInfoList,siteApplicationInfoListStat : ${page.getList()}">
 							<th style="width:100px" th:text="${siteApplicationInfoList.applicationID}">
 								1
 							</th>
@@ -91,16 +91,11 @@
 			<!--页码-->
 			<div>
 				<ul class="pagination">
-					<li><a href="#">&laquo;</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">&raquo;</a></li>
-				</ul>
-				<ul class="pager">
-					<li class="previous"><a href="#">上一页</a></li>
-					<li class="next"><a href="#">下一页</a></li>
+					<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
+						<a th:href="@{/siteManager/findUnapproveSiteApplication(pageNumber=${i})}" th:text="${i}">
+							1
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

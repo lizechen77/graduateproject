@@ -4,6 +4,7 @@ package com.xtu.graduate.project.service.impl;
 import com.xtu.graduate.project.dao.CommonDao;
 import com.xtu.graduate.project.dao.DepartmentDao;
 import com.xtu.graduate.project.dao.impl.UserDaoImpl;
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.SiteInfo;
 import com.xtu.graduate.project.service.CommonService;
@@ -31,30 +32,30 @@ public class DepartmentServiceImpl implements DepartmentService {
     CommonDao commonDao;
 
     @Override
-    public List<Map<String, Object>> findSiteApplicationInfo(String departmentID, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
-        List<Map<String, Object>> list;
+    public CurrentPage findSiteApplicationInfo(String departmentID, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
+        CurrentPage page;
         if (StringUtils.isNotBlank(departmentID)) {
             LOGGER.info("Finding site application by departmentID......");
-            list = this.departmentDao.findSiteApplicationByDepartmentID(departmentID, pageNumber);
-            return list;
+            page = this.departmentDao.findSiteApplicationByDepartmentID(departmentID, pageNumber);
+            return page;
         }
         if (StringUtils.isNotBlank(locale)) {
             if(beginTime1 != null && beginTime2 != null) {
                 LOGGER.info("Finding site application by locale and beginTime......");
-                list = this.departmentDao.findSiteApplicationByLocaleAndBeginTime(locale, beginTime1, beginTime2, pageNumber);
-                return list;
+                page = this.departmentDao.findSiteApplicationByLocaleAndBeginTime(locale, beginTime1, beginTime2, pageNumber);
+                return page;
             }
             LOGGER.info("Finding site application by locale......");
-            list = this.departmentDao.findSiteApplicationByLocale(locale, pageNumber);
-            return list;
+            page = this.departmentDao.findSiteApplicationByLocale(locale, pageNumber);
+            return page;
         }
         if (beginTime1 != null && beginTime2 != null) {
             LOGGER.info("Finding site application by beginTime......");
-            list = this.departmentDao.findSiteApplicationByBeginTime(beginTime1, beginTime2, pageNumber);
-            return list;
+            page = this.departmentDao.findSiteApplicationByBeginTime(beginTime1, beginTime2, pageNumber);
+            return page;
         }
-        list = this.departmentDao.findAllSiteApplication(pageNumber);
-        return list;
+        page = this.departmentDao.findAllSiteApplication(pageNumber);
+        return page;
     }
 
     @Override

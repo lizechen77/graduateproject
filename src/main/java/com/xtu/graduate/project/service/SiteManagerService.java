@@ -1,5 +1,6 @@
 package com.xtu.graduate.project.service;
 
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.User;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface SiteManagerService {
     Integer createUser(User user);
     Integer deleteUserByUserID(String userID);
-    List<Map<String, Object>> findUnapproveSiteApplication(int pageNumber);
-    List<Map<String, Object>> findApprovedSiteApplication(int pageNumber);
+    CurrentPage findUnapproveSiteApplication(int pageNumber);
+    CurrentPage findApprovedSiteApplication(int pageNumber);
     Integer approve(String applicationID, String advice);
 }

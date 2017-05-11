@@ -1,5 +1,6 @@
 package com.xtu.graduate.project.rest;
 
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.SiteInfo;
 import com.xtu.graduate.project.domains.User;
@@ -40,6 +41,7 @@ public class GraduateProjectREST {
     @Autowired
     JdbcTemplate jdbcTemplate;
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GraduateProjectREST.class);
+
     @Autowired
     UserService userService;
     @Autowired
@@ -109,12 +111,9 @@ public class GraduateProjectREST {
         String locale = request.getParameter("locale");
         String tempBeginTime1 = request.getParameter("beginTime1");
         String tempBeginTime2 = request.getParameter("beginTime2");
-        int pageNumber;
-        try {
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-        } catch (NumberFormatException e) {
-            LOGGER.info("pageNumber转换失败");
-            return null;
         }
         Date beginTime1 = null;
         Date beginTime2 = null;
@@ -127,9 +126,9 @@ public class GraduateProjectREST {
                 return null;
             }
         }
-        List<Map<String, Object>> list = this.userService.findActivityInfo(activityName, locale, beginTime1, beginTime2, pageNumber);
+        CurrentPage page = this.userService.findActivityInfo(activityName, locale, beginTime1, beginTime2, pageNumber);
         ModelAndView mav = new ModelAndView("findActivityInfo");
-        mav.addObject("activityList", list);
+        mav.addObject("page", page);
         return mav;
     }
 
@@ -194,21 +193,18 @@ public class GraduateProjectREST {
                 return null;
             }
         }
-        int pageNumber;
-        try {
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-        } catch (NumberFormatException e) {
-            LOGGER.info("pageNumber转换失败");
-            return null;
         }
-        List<Map<String, Object>> list = this.departmentService.findSiteApplicationInfo(departmentID, locale, beginTime1, beginTime2, pageNumber);
+        CurrentPage page = this.departmentService.findSiteApplicationInfo(departmentID, locale, beginTime1, beginTime2, pageNumber);
         ModelAndView mav;
         if (StringUtils.isBlank(departmentID)) {
             mav = new ModelAndView("department/findSiteApplicationInfo");
         } else {
             mav = new ModelAndView("department/mySiteApplicationInfo");
         }
-        mav.addObject("siteApplicationInfoList", list);
+        mav.addObject("page", page);
         return mav;
     }
 
@@ -221,16 +217,13 @@ public class GraduateProjectREST {
 
     @RequestMapping("siteManager/findUnapproveSiteApplication")
     public ModelAndView siteManager(HttpServletRequest request) {
-        int pageNumber;
-        try {
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-        } catch (NumberFormatException e) {
-            LOGGER.info("pageNumber转换失败");
-            return null;
         }
-        List<Map<String, Object>> list = this.siteManagerService.findUnapproveSiteApplication(pageNumber);
+        CurrentPage page = this.siteManagerService.findUnapproveSiteApplication(pageNumber);
         ModelAndView mav = new ModelAndView("siteManager/findUnapproveSiteApplication");
-        mav.addObject("siteApplicationInfoList", list);
+        mav.addObject("page", page);
         return mav;
     }
 
@@ -266,16 +259,13 @@ public class GraduateProjectREST {
 
     @RequestMapping("siteManager/findApprovedSiteApplication")
     public ModelAndView findUnapproveSiteApplication(HttpServletRequest request) {
-        int pageNumber;
-        try {
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-        } catch (NumberFormatException e) {
-            LOGGER.info("pageNumber转换失败");
-            return null;
         }
-        List<Map<String, Object>> list = this.siteManagerService.findApprovedSiteApplication(pageNumber);
+        CurrentPage page = this.siteManagerService.findApprovedSiteApplication(pageNumber);
         ModelAndView mav = new ModelAndView("siteManager/findApprovedSiteApplication");
-        mav.addObject("siteApplicationInfoList", list);
+        mav.addObject("page", page);
         return mav;
     }
 
