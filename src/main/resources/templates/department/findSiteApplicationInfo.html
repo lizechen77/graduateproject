@@ -105,7 +105,7 @@
 			</div>
 			<!--页码-->
 			<nav style="margin-left:650px">
-				<ul class="pagination">
+				<ul class="pagination" th:if="${page.getPageCount()} != 0">
 					<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
 						<a th:href="@{/department/findSiteApplicationInfo(pageNumber=${i})}" th:text="${i}">123</a>
 					</li>
