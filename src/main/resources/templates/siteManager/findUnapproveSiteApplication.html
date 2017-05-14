@@ -90,7 +90,7 @@
 			</div>
 			<!--页码-->
 			<div>
-				<ul class="pagination">
+				<ul class="pagination" th:if="${page.getPageCount()} != 0"	>
 					<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
 						<a th:href="@{/siteManager/findUnapproveSiteApplication(pageNumber=${i})}" th:text="${i}">
 							1

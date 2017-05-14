@@ -34,33 +34,13 @@
 <ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 100px 150px 0;height:790px;">
     <li style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo}">活动查询</a></li>
     <li style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
-    <li class="active" style="text-align:center;"><a th:href="@{/department/findSiteApplicationInfo(departmentID=${session.userID})}">审批状态</a></li>
+    <li class="active" style="text-align:center;"><a th:href="@{/department/mySiteApplicationInfo}">我的审批状态</a></li>
     <li style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
 </ul>
 <!--导航内容-->
 <div class="tab-content" style="padding:50px 0px 150px 0px;">
     <!-- 查找活动信息-->
     <div class="tab-pane active" id="search">
-        <!-- 搜索栏-->
-        <div>
-            <form th:action="@{/department/findSiteApplicationInfo}">
-                <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z" style="margin-left:80px">
-                    活动时间:
-                    <input size="23" type="text" th:name="beginTime1"/>
-                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
-                    <span>--&nbsp;</span>
-                </div>
-
-                <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
-                    <input size="23" type="text" th:name="beginTime2" />
-                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
-                </div>
-
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：</span>
-                <input size="15" type="text" th:name="locale" />
-                <button class="glyphicon glyphicon-search"></button>
-            </form>
-        </div>
 
     <!-- 审批流程-->
     <div class="tab-pane" id="plan" style="margin-left:400px;">
@@ -90,7 +70,7 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="${page.getList() != null}">
                 <tr th:each= "siteApplicationInfoList,siteApplicationInfoListStat : ${page.getList()}">
                     <th style="width:100px" th:text="${siteApplicationInfoList.applicationID}">
                         1

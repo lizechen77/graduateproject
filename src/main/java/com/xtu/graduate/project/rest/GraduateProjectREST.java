@@ -1,5 +1,6 @@
 package com.xtu.graduate.project.rest;
 
+import com.sun.javafx.sg.prism.NGShape;
 import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.SiteInfo;
@@ -132,6 +133,11 @@ public class GraduateProjectREST {
         return mav;
     }
 
+
+
+
+
+
     //部门用户
     @RequestMapping(value = "department/createSiteApplication",method = RequestMethod.GET)
     public ModelAndView createSiteApplication() {
@@ -162,23 +168,29 @@ public class GraduateProjectREST {
         siteApplication.setSiteManagerID(siteManagerID);
         siteApplication.setSiteID(request.getParameter("siteID"));
         siteApplication.setDetails(request.getParameter("details"));
+        siteApplication.setActivityName(request.getParameter("activityName"));
         siteApplication.setBeginTime(beginTime);
         siteApplication.setEndTime(endTime);
-        siteApplication.setDepartmentID(request.getParameter("departmentID"));
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.getSession(true);
+        Session session = currentUser.getSession();
+        String departmentID = (String)session.getAttribute("userID");
+        siteApplication.setDepartmentID(departmentID);
         int row = 0;
         try {
             row = this.departmentService.createSiteApplication(siteApplication);
         }   catch (EmptyResultDataAccessException e) {
             LOGGER.info("Create site application error");
         }
+        mav.setViewName("redirect:/department/mySiteApplicationInfo");
         mav.addObject("row", row);
+        LOGGER.info("场地申请表创建成功");
         return mav;
     }
 
 
     @RequestMapping("department/findSiteApplicationInfo")
     public ModelAndView findSiteApplicationInfo(HttpServletRequest request) {
-        String departmentID = request.getParameter("departmentID");
         String locale = request.getParameter("locale");
         String tempBeginTime1 = request.getParameter("beginTime1");
         String tempBeginTime2 = request.getParameter("beginTime2");
@@ -197,13 +209,24 @@ public class GraduateProjectREST {
         if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
-        CurrentPage page = this.departmentService.findSiteApplicationInfo(departmentID, locale, beginTime1, beginTime2, pageNumber);
-        ModelAndView mav;
-        if (StringUtils.isBlank(departmentID)) {
-            mav = new ModelAndView("department/findSiteApplicationInfo");
-        } else {
-            mav = new ModelAndView("department/mySiteApplicationInfo");
+        CurrentPage page = this.departmentService.findSiteApplicationInfo(null, locale, beginTime1, beginTime2, pageNumber);
+        ModelAndView mav = new ModelAndView("department/findSiteApplicationInfo");
+        mav.addObject("page", page);
+        return mav;
+    }
+
+    @RequestMapping("department/mySiteApplicationInfo")
+    public ModelAndView mySiteApplication(HttpServletRequest request) {
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.getSession(true);
+        Session session = currentUser.getSession();
+        String departmentID = (String)session.getAttribute("userID");
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
+        CurrentPage page = this.departmentService.findSiteApplicationInfo(departmentID, null, null, null, pageNumber);
+        ModelAndView mav = new ModelAndView("department/mySiteApplicationInfo");
         mav.addObject("page", page);
         return mav;
     }
@@ -212,6 +235,13 @@ public class GraduateProjectREST {
     public ModelAndView siteApplicationInstruction() {
         return new ModelAndView("department/siteApplicationInstruction");
     }
+
+
+
+
+
+
+
 
     //场地管理员
 
