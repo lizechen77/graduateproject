@@ -77,7 +77,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,  (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,  (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -109,7 +109,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{beginTime1, beginTime2}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{activityName, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{activityName, locale, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{activityName, locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -178,7 +178,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{activityName, beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{activityName, beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{activityName, beginTime1, beginTime2}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -211,7 +211,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{beginTime1, beginTime2, locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -247,7 +247,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = this.jdbcTemplate.queryForList(sql1, new Object[]{activityName, beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{activityName, beginTime1, beginTime2, locale, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{activityName, beginTime1, beginTime2, locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -279,7 +279,7 @@ public class UserDaoImpl implements UserDao {
         Integer tempPageCount;
         int pageCount;
         try {
-            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;

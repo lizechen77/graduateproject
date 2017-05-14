@@ -1,6 +1,5 @@
 package com.xtu.graduate.project.rest;
 
-import com.sun.javafx.sg.prism.NGShape;
 import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
 import com.xtu.graduate.project.domains.SiteInfo;
@@ -169,6 +168,7 @@ public class GraduateProjectREST {
         siteApplication.setSiteID(request.getParameter("siteID"));
         siteApplication.setDetails(request.getParameter("details"));
         siteApplication.setActivityName(request.getParameter("activityName"));
+        LOGGER.info("activityName = {}", siteApplication.getActivityName());
         siteApplication.setBeginTime(beginTime);
         siteApplication.setEndTime(endTime);
         Subject currentUser = SecurityUtils.getSubject();

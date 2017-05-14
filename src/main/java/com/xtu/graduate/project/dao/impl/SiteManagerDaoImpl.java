@@ -50,7 +50,7 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
         Integer tempPageCount;
         int pageCount;
         try{
-            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         }   catch (EmptyResultDataAccessException e) {
             return null;
@@ -74,7 +74,7 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
         Integer tempPageCount;
         int pageCount;
         try{
-            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         }   catch (EmptyResultDataAccessException e) {
             return null;

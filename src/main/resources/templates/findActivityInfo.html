@@ -91,10 +91,14 @@
 		</table>
 	</div>
 	<!--页码-->
-	<div style="margin:0 auto">
-		<ul class="pagination">
-			<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}" th:text="${i}"><a href="#">1</a></li>
-		</ul>
+	<div>
+		<nav style="margin-left:280px">
+			<ul class="pagination" th:if="${page.getPageCount()} != 0">
+				<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
+					<a th:href="@{/department/mySiteApplicationInfo(pageNumber=${i})}"  th:text="${i}">1</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 <script src="../../code/js/jquery.min.js" th:src="@{js/jquery.min.js}"></script>
 <script src="../../code/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>

@@ -36,7 +36,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -63,7 +63,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{locale, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{locale, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -87,7 +87,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{beginTime1, beginTime2}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -116,7 +116,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale,beginTime1, beginTime2}, Integer.class);
 
         } catch (EmptyResultDataAccessException e) {
@@ -144,7 +144,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{departmentID, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
+            list = jdbcTemplate.queryForList(sql1, new Object[]{departmentID, (pageNumber-1)*pageSize, pageSize});
             tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{departmentID}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;

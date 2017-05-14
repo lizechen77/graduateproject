@@ -18,7 +18,8 @@
 <script th:src="@{js/locals/bootstrap-datetimepicker.fr.js}"></script>
 <script th:src="@{js/bootstrap-datetimepicker.min.js}"></script>
 <script th:src="@{js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
-<script type="text/javascript">
+<script th:inline="javascript">
+    /*<![CDATA[*/
     var t = 5;
     function countDown()
     {
@@ -32,6 +33,7 @@
         }
     };
     var inter = setInterval("countDown()",1000);
+    /*]]>*/
 </script>
 </body>
 </html>
