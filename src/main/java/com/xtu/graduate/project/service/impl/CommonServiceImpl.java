@@ -26,4 +26,10 @@ public class CommonServiceImpl implements CommonService{
         SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteID(siteID);
         return siteInfo;
     }
+
+    @Override
+    public Integer changePassword(String userID, String oldPassword, String newPassword) {
+        int rows = this.commonDao.changePassword(userID, oldPassword, newPassword);
+        return rows;
+    }
 }

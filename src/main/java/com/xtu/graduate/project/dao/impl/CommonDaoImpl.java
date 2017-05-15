@@ -57,7 +57,6 @@ public class CommonDaoImpl implements CommonDao{
                             tempSiteInfo.setSiteID(rs.getString("siteID"));
                             tempSiteInfo.setSiteName(rs.getString("siteName"));
                             tempSiteInfo.setLocale(rs.getString("locale"));
-                            tempSiteInfo.setPrice(rs.getString("price"));
                             tempSiteInfo.setSiteManagerID(rs.getString("siteManagerID"));
                             return tempSiteInfo;
                         }
@@ -66,5 +65,12 @@ public class CommonDaoImpl implements CommonDao{
             return null;
         }
         return siteInfo;
+    }
+
+    @Override
+    public Integer changePassword(String userID, String oldPassword, String newPassword) {
+        String sql = "update user set  password = ? where password = ? and userID = ?";
+        int rows = this.jdbcTemplate.update(sql, new Object[] {newPassword, oldPassword, userID});
+        return rows;
     }
 }

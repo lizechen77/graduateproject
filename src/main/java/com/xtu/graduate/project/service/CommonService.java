@@ -9,4 +9,6 @@ import com.xtu.graduate.project.domains.User;
 public interface CommonService {
     User findUserByUserID(String userID);
     SiteInfo findSiteInfoBySiteID(String siteID);
+    Integer changePassword(String userID, String oldPassword, String newPassword);
+
 }

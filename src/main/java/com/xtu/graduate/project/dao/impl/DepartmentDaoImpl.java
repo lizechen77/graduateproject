@@ -170,7 +170,7 @@ public class DepartmentDaoImpl implements DepartmentDao{
         String siteManagerID = siteApplication.getSiteManagerID();
         String activityName = siteApplication.getActivityName();
         String sql = "insert into siteApplication(status, siteID, details, beginTime, endTime, " +
-                "departmentID, siteManagerID, activityName) values('审批未通过', ?, ?, ?, ?, ? ,?, ?)";
+                "departmentID, siteManagerID, activityName) values('待审批', ?, ?, ?, ?, ? ,?, ?)";
         int rows = jdbcTemplate.update(sql, new Object[] {siteID, details, beginTime, endTime,
         departmentID, siteManagerID, activityName});
         return rows;

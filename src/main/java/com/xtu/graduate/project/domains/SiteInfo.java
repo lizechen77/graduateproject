@@ -7,7 +7,6 @@ public class SiteInfo {
     private String siteID;
     private String siteName;
     private String locale;
-    private String price;
     private String siteManagerID;
 
     public String getSiteID() {
@@ -32,14 +31,6 @@ public class SiteInfo {
 
     public void setLocale(String locale) {
         this.locale = locale;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public String getSiteManagerID() {

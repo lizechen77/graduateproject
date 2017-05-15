@@ -66,5 +66,4 @@ public class DepartmentServiceImpl implements DepartmentService {
         siteApplication.setSiteManagerID(siteManagerID);
         return this.departmentDao.createSiteApplication(siteApplication);
     }
-
 }

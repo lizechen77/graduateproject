@@ -18,6 +18,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,6 +103,26 @@ public class GraduateProjectREST {
     @RequestMapping("/logout")
     public ModelAndView loginOut() {
         return new ModelAndView("/index");
+    }
+
+    @RequestMapping(value = "changePassword", method = RequestMethod.GET)
+    public ModelAndView changePassword() {
+        return new ModelAndView("changePassword");
+    }
+
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    public ModelAndView changePassword(HttpServletRequest request) {
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.getSession(true);
+        Session session = currentUser.getSession();
+        String userID = (String)session.getAttribute("userID");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        int rows = this.commonService.changePassword(userID, oldPassword, newPassword);
+        if (rows == 0) {
+            return new ModelAndView("changePasswordDefault");
+        }
+        return new ModelAndView("changePasswordSuccess");
     }
 
     //游客
@@ -236,6 +257,7 @@ public class GraduateProjectREST {
     public ModelAndView siteApplicationInstruction() {
         return new ModelAndView("department/siteApplicationInstruction");
     }
+
 
 
 
