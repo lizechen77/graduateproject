@@ -112,6 +112,7 @@ public class GraduateProjectREST {
         String tempBeginTime1 = request.getParameter("beginTime1");
         String tempBeginTime2 = request.getParameter("beginTime2");
         int pageNumber = 1;
+        LOGGER.info("activityName = {}", activityName);
         if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
@@ -266,11 +267,18 @@ public class GraduateProjectREST {
     public ModelAndView createUser(HttpServletRequest request) {
         User user = new User();
         user.setUserID(request.getParameter("userID"));
+        User tempUser = this.commonService.findUserByUserID(request.getParameter("userID"));
+        String info = "";
+        if (tempUser != null) {
+            info = "创建user失败，userID已经存在";
+            return new ModelAndView("siteManager/createUserResult");
+        }
         user.setPassword(request.getParameter("password"));
         user.setRoleID(request.getParameter("roleID"));
         user.setUserName(request.getParameter("userName"));
         int row = this.siteManagerService.createUser(user);
-        return null;
+        info = "创建user成功";
+        return new ModelAndView("siteManager/createUserResult");
     }
 
     @RequestMapping("findUser")
@@ -299,10 +307,12 @@ public class GraduateProjectREST {
         return mav;
     }
 
-    @RequestMapping("approve")
-    public ModelAndView approve(String applicationID, String advice) {
-        int row = this.siteManagerService.approve(applicationID, advice);
-        return new ModelAndView();
+    @RequestMapping("siteManager/approve")
+    public ModelAndView approve(HttpServletRequest request) {
+        int applicationID = Integer.valueOf(request.getParameter("applicationID"));
+        String status = request.getParameter("status");
+        int row = this.siteManagerService.approve(applicationID, status);
+        return new ModelAndView("redirect:/siteManager/findUnapproveSiteApplication");
     }
 
 

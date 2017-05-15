@@ -43,10 +43,12 @@ public class SiteManagerServiceImpl implements SiteManagerService {
     }
 
     @Override
-    public Integer approve(String applicationID, String advice) {
-        if (advice.equals("approve")) {
+    public Integer approve(int applicationID, String status) {
+        if (status.equals("approve")) {
+            LOGGER.info("审批通过");
             return this.siteManagerDao.approve(applicationID, "已审批通过");
         }
+        LOGGER.info("审批未通过");
         return this.siteManagerDao.approve(applicationID, "审批未通过");
     }
 }

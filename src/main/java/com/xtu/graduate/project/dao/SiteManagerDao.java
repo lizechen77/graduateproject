@@ -15,5 +15,5 @@ public interface SiteManagerDao {
     Integer deleteUser(String UserID);
     CurrentPage findUnapprovedSiteApplication(int pageNumber);
     CurrentPage findApprovedSiteApplication(int pageNumber);
-    Integer approve(String applicationID, String status);
+    Integer approve(int applicationID, String status);
 }

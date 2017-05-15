@@ -91,7 +91,7 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
     }
 
     @Override
-    public Integer approve(String applicationID, String status) {
+    public Integer approve(int applicationID, String status) {
         String sql = "update siteApplication set status = ? where applicationID = ? LIMIT ?,?";
         int rows = this.jdbcTemplate.update(sql, new Object[]{status, applicationID});
         return rows;

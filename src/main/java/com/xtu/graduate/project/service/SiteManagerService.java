@@ -15,5 +15,5 @@ public interface SiteManagerService {
     Integer deleteUserByUserID(String userID);
     CurrentPage findUnapproveSiteApplication(int pageNumber);
     CurrentPage findApprovedSiteApplication(int pageNumber);
-    Integer approve(String applicationID, String advice);
+    Integer approve(int applicationID, String status);
 }

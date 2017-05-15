@@ -33,19 +33,19 @@ public class UserDaoImpl implements UserDao {
         String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "user.userID  where siteApplication.activityName=?";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
         try {
             list =  jdbcTemplate.queryForList(sql1, new Object[]{activityName, (pageNumber-1)*pageSize, (pageNumber)*pageSize});
-            tempPageCount = jdbcTemplate.queryForObject(sql1, new Object[]{activityName}, Integer.class);
+            tempPageCount = jdbcTemplate.queryForObject(sql2, new Object[]{activityName}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -67,12 +67,12 @@ public class UserDaoImpl implements UserDao {
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale =?)" +
-                "inner join user on activityInfo.departmentID = user.userID LIMIT ?,?";
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
+                "inner join user on activityInfo.departmentID = user.userID where locale =? LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale =?)" +
-                "inner join user on activityInfo.departmentID = user.userID";
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
+                "inner join user on activityInfo.departmentID = user.userID where locale =?";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -131,13 +131,13 @@ public class UserDaoImpl implements UserDao {
         String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where siteInfo.locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID where siteApplication.activityName=? and siteInfo.locale=? LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where siteInfo.locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID )inner join user on activityInfo.departmentID = " +
+                "user.userID where siteApplication.activityName=? and siteInfo.locale=?";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -165,15 +165,13 @@ public class UserDaoImpl implements UserDao {
         String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
-                "and beginTime between ? and ?)" +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
-                "and beginTime between ? and ?)" +
+                "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -200,13 +198,13 @@ public class UserDaoImpl implements UserDao {
         String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where beginTime between ? and ?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID where beginTime between ? and ? and locale=? LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where beginTime between ? and ?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID where beginTime between ? and ? and locale=? ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -233,16 +231,14 @@ public class UserDaoImpl implements UserDao {
         String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
                 "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
-                "and beginTime between ? and ?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and locale=? LIMIT ?,?";
 
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID where siteApplication.activityName=? " +
-                "and beginTime between ? and ?)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID where locale=?)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "activityInfo.applicationID = siteApplication.applicationID)" +
+                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID )inner join user on activityInfo.departmentID = " +
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and locale=?";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -270,11 +266,11 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID LIMIT ?,?";
+                "user.userID where status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID";
+                "user.userID where status = '审批通过' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
