@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
@@ -68,7 +68,8 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
-                "inner join user on activityInfo.departmentID = user.userID where locale =? LIMIT ?,?";
+                "inner join user on activityInfo.departmentID = user.userID where locale =? " +
+                "and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
@@ -101,7 +102,7 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteInfo on activityInfo.siteID = " +
                 "siteInfo.siteID) inner join user on activityInfo.departmentID = user.userID) inner join siteApplication" +
                 " on activityInfo.applicationID = siteApplication.applicationID where beginTime BETWEEN ? and ? " +
-                "LIMIT ?,?";
+                "and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteInfo on activityInfo.siteID = " +
                 "siteInfo.siteID) inner join user on activityInfo.departmentID = user.userID) inner join siteApplication" +
                 " on activityInfo.applicationID = siteApplication.applicationID where beginTime BETWEEN ? and ?";
@@ -133,7 +134,8 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and siteInfo.locale=? LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? and siteInfo.locale=? " +
+                "and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID )inner join user on activityInfo.departmentID = " +
@@ -167,7 +169,7 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
@@ -200,7 +202,7 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where beginTime between ? and ? and locale=? LIMIT ?,?";
+                "user.userID where beginTime between ? and ? and locale=? and status = '审批通过' LIMIT ?,?";
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
@@ -233,7 +235,8 @@ public class UserDaoImpl implements UserDao {
                 "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +
                 "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and locale=? LIMIT ?,?";
+                "user.userID where siteApplication.activityName=? and beginTime between ? and ? " +
+                "and locale=? and status = '审批通过' LIMIT ?,?";
 
         String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
                 "activityInfo.applicationID = siteApplication.applicationID)" +

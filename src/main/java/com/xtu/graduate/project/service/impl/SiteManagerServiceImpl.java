@@ -1,5 +1,6 @@
 package com.xtu.graduate.project.service.impl;
 
+import com.xtu.graduate.project.dao.CommonDao;
 import com.xtu.graduate.project.dao.SiteManagerDao;
 import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteApplication;
@@ -21,10 +22,19 @@ public class SiteManagerServiceImpl implements SiteManagerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentServiceImpl.class);
     @Autowired
     SiteManagerDao siteManagerDao;
+
+    @Autowired
+    CommonDao commonDao;
+
     @Override
     public Integer createUser(User user) {
         LOGGER.info("Creating user.......uerID = {}", user.getUserID());
-        return this.siteManagerDao.createUser(user);
+        User tempUser = this.commonDao.findUserByUserID(user.getUserID());
+        if (tempUser == null) {
+            return this.siteManagerDao.createUser(user);
+        } else {
+            return 0;
+        }
     }
 
     @Override

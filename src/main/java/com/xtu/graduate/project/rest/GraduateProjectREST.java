@@ -289,18 +289,20 @@ public class GraduateProjectREST {
     public ModelAndView createUser(HttpServletRequest request) {
         User user = new User();
         user.setUserID(request.getParameter("userID"));
-        User tempUser = this.commonService.findUserByUserID(request.getParameter("userID"));
-        String info = "";
-        if (tempUser != null) {
-            info = "创建user失败，userID已经存在";
-            return new ModelAndView("siteManager/createUserResult");
-        }
         user.setPassword(request.getParameter("password"));
         user.setRoleID(request.getParameter("roleID"));
         user.setUserName(request.getParameter("userName"));
-        int row = this.siteManagerService.createUser(user);
-        info = "创建user成功";
-        return new ModelAndView("siteManager/createUserResult");
+        String info = "";
+        int rows = this.siteManagerService.createUser(user);
+        ModelAndView mav = new ModelAndView("siteManager/createUserResult");
+        if (rows == 0) {
+            info = "创建user失败，userID已经存在,3秒后自动跳转";
+            mav.addObject("info", info);
+            return mav;
+        }
+        info = "创建user成功，3秒后自动跳转";
+        mav.addObject("info", info);
+        return mav;
     }
 
     @RequestMapping("findUser")
