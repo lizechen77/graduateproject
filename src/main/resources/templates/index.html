@@ -31,7 +31,7 @@
 </head>
 <body>
 	<!-- 巨幕-->
-	<div class="jumbotron" style="background-color:#E4EEF9;margin:0px">
+	<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
 		<div class="container">
 			<div class="col-md-1">
 			<img th:src="@{img/logo.png}" class="pull-left" />
@@ -42,7 +42,7 @@
 		</div>
 	</div>
 	<!-- 轮播器-->
-	<div id="myCarousel" class="carousel slide" style="width:100%">
+	<div id="myCarousel" class="carousel slide" style="width:100%;margin:0px;padding:0px;">
 		<ol class="carousel-indicators">
 			<li data-target="#myCarousel" data-slide-to="0" class="active">
 			</li>
@@ -54,7 +54,7 @@
 		<div class="carousel-inner">
 			<div class="item active">
 				<a href="http://www.baidu.com" target="blank">
-					<img th:src="@{img/debate.jpg}" alt="第一张" />
+					<img th:src="@{img/debate.jpg}" width="100%" margin="0px" padding="0" alt="第一张" />
 					<div class="carousel-caption">
 						<h3>你使用，我设计 ---第四届电子商务“创新、创意及创业”大赛决赛</h3>
 					</div>
@@ -62,7 +62,7 @@
 			</div>
 			<div class="item">
 				<a href="http://www.sina.com" target="blank">
-					<img th:src="@{img/activity.JPG}" alt="第二张" />
+					<img th:src="@{img/activity.JPG}" width="100%" margin="0px" padding="0" alt="第二张" />
 					<div class="carousel-caption">
 						<h3>湘潭大学校园十佳歌手大赛</h3>
 					</div>
@@ -70,7 +70,7 @@
 			</div>
 			<div class="item">
 				<a href="http://www.hao123.com" target="blank">
-					<img th:src="@{img/1.JPG}" alt="第三张" />
+					<img th:src="@{img/1.JPG}" width="100%" margin="0px" padding="0" alt="第三张" />
 					<div class="carousel-caption">
 						<h3>商学院辩论赛</h3>
 					</div>
@@ -166,7 +166,6 @@
 						          	<div class="col-sm-7 col-md-offset-4" style="padding:20px">
 						            <button class="btn btn-primary btn-lg btn-block">立刻登录</button>
 						           </div>
-					            	<span class="col-sm-4 col-md-offset-7"><a href="#">找回密码</a></span>
 					          	</div>
 				        	</form>
 				    	</div>

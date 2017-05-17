@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>teacher</title>
+    <link rel="stylesheet" href="../../code/css/bootstrap.min.css" th:href="@{../css/bootstrap.min.css}"/>
+</head>
+<style>
+    th{
+        text-align:center;
+        vertical-align: middle!important;
+    }
+</style>
+<body>
+<div style="width:100%;float:right;padding-right:10px;">
+    <span class="pull-right"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+</div>
+<!--  巨幕-->
+<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
+    <div class="container">
+        <div class="col-md-1">
+            <img src="../../code/img/logo.png" th:src="@{../img/logo.png}" class="pull-left" />
+        </div>
+        <div class="col-md-5">
+
+            <h2 class="pull-left"><b>湘潭大学学生活动管理系统</b></h2>
+        </div>
+    </div>
+</div>
+<!--左侧导航-->
+<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 130px 150px 0;height:100%;">
+    <li style="text-align:center;"><a href="#done" th:href="@{/siteManager/findApprovedSiteApplication}">已审批活动</a></li>
+    <li style="text-align:center;"><a href="#doing" th:href="@{/siteManager/findUnapproveSiteApplication}">待审批活动</a></li>
+    <li class="active" style="text-align:center;"><a href="#add" th:href="@{/siteManager/findAllUser}">用户管理</a></li>
+    <li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
+</ul>
+<!--导航内容-->
+<div class="tab-content" style="padding:40px 150px 150px 150px;">
+    <!--未审批活动-->
+    <div class="tab-pane active" id="done">
+                <button><a th:href="@{/siteManager/createUser}">新增用户</a></button>
+            
+                <table class="table table-bordered" style="margin:20px 0 0 0;width:80%;">
+                    <thead>
+                        <tr>
+                            <th style="width:250px;">
+                                用户账号
+                            </th>
+                            <th style="width:250px">
+                                用户类型
+                            </th>
+                            <th style="width:250px">
+                                用户名称
+                            </th>
+                            <th style="width:200px">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <form th:action="@{/siteManager/deleteUser}">
+                        <tr th:each="userList,userListStat : ${page.getList()}">
+                            <th style="width:250px">
+                                <input th:value="${userList.userID}" th:name="userID" />
+                            </th>
+
+                            <th style="width:250px" th:text="${userList.roleID}">
+                                部门用户
+                            </th>
+                            <th style="width:200px" th:text="${userList.userName}">
+                                科协
+                            </th>
+                            <th style="width:300px">
+                                <input class="btn btn-danger" type="submit" value="删除" />
+                            </th>
+                        </tr>
+                    </form>
+                    </tbody>
+                </table>
+        <!--页码-->
+        <nav style="margin:50px auto;width:200px;height:50px;padding-top:50px">
+            <ul class="pagination" th:if="${page.getPageCount()} != 0">
+                <li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
+                    <a th:href="@{/siteManager/findAllUser(pageNumber=${i})}" th:text="${i}">
+                        1
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script src="../../code/js/jquery.min.js" th:src="@{../js/jquery.min.js}"></script>
+<script src="../../code/js/bootstrap.min.js" th:src="@{../js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -12,6 +12,9 @@
     }
 </style>
 <body>
+<div style="width:100%;float:right;padding-right:10px;">
+    <span class="pull-right"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+</div>
 <!--  巨幕-->
 <div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
     <div class="container">
@@ -28,11 +31,12 @@
 <ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 130px 150px 0;height:100%;">
     <li class="active" style="text-align:center;"><a href="#done" th:href="@{/siteManager/findApprovedSiteApplication}">已审批活动</a></li>
     <li style="text-align:center;"><a href="#doing" th:href="@{/siteManager/findUnapproveSiteApplication}">待审批活动</a></li>
-    <li style="text-align:center;"><a href="#add" th:href="@{/siteManager/createUser}">新增用户</a></li>
+    <li style="text-align:center;"><a href="#add" th:href="@{/siteManager/findAllUser}">用户管理</a></li>
+    <li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
 </ul>
 <!--导航内容-->
 <div class="tab-content" style="padding:40px 150px 150px 150px;">
-    <!--未审批活动-->
+    <!--已审批活动-->
     <div class="tab-pane active" id="done">
         <div>
             <table class="table table-bordered" style="margin:20px 0 0 0;width:80%;">
@@ -85,7 +89,7 @@
             </table>
         </div>
         <!--页码-->
-        <div>
+        <nav style="margin:50px auto;width:200px;height:50px;padding-top:50px">
             <ul class="pagination" th:if="${page.getPageCount()} != 0">
                 <li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
                     <a th:href="@{/siteManager/findApprovedSiteApplication(pageNumber=${i})}" th:text="${i}">
@@ -93,7 +97,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </nav>
     </div>
 </div>
 <script src="../../code/js/jquery.min.js" th:src="@{../js/jquery.min.js}"></script>

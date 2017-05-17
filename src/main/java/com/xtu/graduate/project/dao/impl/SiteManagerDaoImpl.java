@@ -92,8 +92,32 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
 
     @Override
     public Integer approve(int applicationID, String status) {
-        String sql = "update siteApplication set status = ? where applicationID = ? LIMIT ?,?";
+        String sql = "update siteApplication set status = ? where applicationID = ?";
         int rows = this.jdbcTemplate.update(sql, new Object[]{status, applicationID});
         return rows;
+    }
+
+    @Override
+    public CurrentPage findAllUser(int pageNumber) {
+        String sql1 = "select * from user LIMIT ?,?";
+        String sql2 = "select count(*) from user";
+        List<Map<String, Object>> list;
+        Integer tempPageCount;
+        int pageCount;
+        try {
+            list = this.jdbcTemplate.queryForList(sql1, new Object[]{(pageNumber-1)*pageSize, pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        if (tempPageCount % 10 == 0) {
+            pageCount = tempPageCount.intValue()/10;
+        } else {
+            pageCount = tempPageCount.intValue()/10 + 1;
+        }
+        CurrentPage page = new CurrentPage();
+        page.setList(list);
+        page.setPageCount(pageCount);
+        return page;
     }
 }

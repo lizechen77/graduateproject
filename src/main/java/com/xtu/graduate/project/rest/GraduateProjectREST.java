@@ -118,11 +118,22 @@ public class GraduateProjectREST {
         String userID = (String)session.getAttribute("userID");
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
+        String roleID = (String)session.getAttribute("roleID");
         int rows = this.commonService.changePassword(userID, oldPassword, newPassword);
-        if (rows == 0) {
-            return new ModelAndView("changePasswordDefault");
+
+        if (rows == 0 ) {
+            if (roleID.equals("部门用户")) {
+                return new ModelAndView("department/changePasswordDefault");
+            } else {
+                return new ModelAndView("siteManager/changePasswordDefault");
+            }
+        } else {
+            if (roleID.equals("部门用户")) {
+                return new ModelAndView("department/changePasswordSuccess");
+            } else {
+                return new ModelAndView("siteManager/changePasswordSuccess");
+            }
         }
-        return new ModelAndView("changePasswordSuccess");
     }
 
     //游客
@@ -168,15 +179,6 @@ public class GraduateProjectREST {
     @RequestMapping(value = "department/createSiteApplication",method = RequestMethod.POST)
     public ModelAndView createSiteApplication(HttpServletRequest request) {
         LOGGER.info("正在创建场地申请表");
-        SiteInfo siteInfo = new SiteInfo();
-        siteInfo = this.commonService.findSiteInfoBySiteID(request.getParameter("siteID"));
-        ModelAndView mav = new ModelAndView();
-        if (siteInfo == null) {
-            mav.addObject("errorMessage", "该场地不存在");
-            return mav;
-        }
-        String siteManagerID = siteInfo.getSiteManagerID();
-        SiteApplication siteApplication = new SiteApplication();
         Date beginTime;
         Date endTime;
         try {
@@ -186,11 +188,9 @@ public class GraduateProjectREST {
             LOGGER.info("time format error......");
             return null;
         }
-        siteApplication.setSiteManagerID(siteManagerID);
-        siteApplication.setSiteID(request.getParameter("siteID"));
+        SiteApplication siteApplication = new SiteApplication();
         siteApplication.setDetails(request.getParameter("details"));
         siteApplication.setActivityName(request.getParameter("activityName"));
-        LOGGER.info("activityName = {}", siteApplication.getActivityName());
         siteApplication.setBeginTime(beginTime);
         siteApplication.setEndTime(endTime);
         Subject currentUser = SecurityUtils.getSubject();
@@ -198,11 +198,23 @@ public class GraduateProjectREST {
         Session session = currentUser.getSession();
         String departmentID = (String)session.getAttribute("userID");
         siteApplication.setDepartmentID(departmentID);
-        int row = 0;
+        String siteName = request.getParameter("siteName");
+        int row = 2;
         try {
-            row = this.departmentService.createSiteApplication(siteApplication);
+            row = this.departmentService.createSiteApplication(siteApplication, siteName);
         }   catch (EmptyResultDataAccessException e) {
             LOGGER.info("Create site application error");
+        }
+        ModelAndView mav = new ModelAndView();
+        if (row == 0) {
+            mav.setViewName("department/createSiteApplicationDefault");
+            mav.addObject("info", "该场地不存在,请检查场地名是否正确");
+            return mav;
+        }
+        if (row == -1) {
+            mav.setViewName("department/createSiteApplicationDefault");
+            mav.addObject("info", "已经被其他部门申请成功，请更换开始时间或地点");
+            return mav;
         }
         mav.setViewName("redirect:/department/mySiteApplicationInfo");
         mav.addObject("row", row);
@@ -305,18 +317,23 @@ public class GraduateProjectREST {
         return mav;
     }
 
-    @RequestMapping("findUser")
-    public ModelAndView findUser(String userID) {
-        User user = this.commonService.findUserByUserID(userID);
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("user", user);
+    @RequestMapping("siteManager/findAllUser")
+    public ModelAndView findAllUser(HttpServletRequest request) {
+        int pageNumber = 1;
+        if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        }
+        CurrentPage page = this.siteManagerService.findAllUser(pageNumber);
+        ModelAndView mav = new ModelAndView("siteManager/findAllUser");
+        mav.addObject("page", page);
         return mav;
     }
 
-    @RequestMapping("deleteUser")
-    public ModelAndView deleteUser(String userID) {
+    @RequestMapping("siteManager/deleteUser")
+    public ModelAndView deleteUser(HttpServletRequest request) {
+        String userID = request.getParameter("userID");
         int row = this.siteManagerService.deleteUserByUserID(userID);
-        return new ModelAndView();
+        return new ModelAndView("redirect:siteManager/findAllUser");
     }
 
     @RequestMapping("siteManager/findApprovedSiteApplication")
@@ -333,8 +350,15 @@ public class GraduateProjectREST {
 
     @RequestMapping("siteManager/approve")
     public ModelAndView approve(HttpServletRequest request) {
-        int applicationID = Integer.valueOf(request.getParameter("applicationID"));
-        String status = request.getParameter("status");
+        int applicationID = Integer.parseInt(request.getParameter("applicationID"));
+        String status = "";
+        if (StringUtils.isNotBlank(request.getParameter("approve"))) {
+            status = "审批通过";
+        }
+        if (StringUtils.isNotBlank(request.getParameter("unApprove"))) {
+            status = "审批未通过";
+        }
+
         int row = this.siteManagerService.approve(applicationID, status);
         return new ModelAndView("redirect:/siteManager/findUnapproveSiteApplication");
     }

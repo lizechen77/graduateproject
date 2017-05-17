@@ -47,7 +47,6 @@ public class ShiroConfig {
         bean.setUnauthorizedUrl("/unauthor");
 
         Map<String, String> chains = new LinkedHashMap<String, String>();
-        chains.put("/test", "anon");
         chains.put("/index", "anon");
         chains.put("/findActivityInfo", "anon");
         chains.put("/login", "anon");
@@ -56,7 +55,6 @@ public class ShiroConfig {
         chains.put("/fonts/**", "anon");
         chains.put("/js/**", "anon");
         chains.put("/logout", "logout");
-        chains.put("/permissionTest", "authc,roles[admin]");
         chains.put("/department/**", "authc, roles[部门用户]");
         chains.put("/siteManager/**", "authc, roles[场地管理员]");
         chains.put("/unauthor", "anon");

@@ -1,6 +1,7 @@
 package com.xtu.graduate.project.service.impl;
 
 import com.xtu.graduate.project.dao.CommonDao;
+import com.xtu.graduate.project.domains.CurrentPage;
 import com.xtu.graduate.project.domains.SiteInfo;
 import com.xtu.graduate.project.domains.User;
 import com.xtu.graduate.project.service.CommonService;
@@ -32,4 +33,11 @@ public class CommonServiceImpl implements CommonService{
         int rows = this.commonDao.changePassword(userID, oldPassword, newPassword);
         return rows;
     }
+
+    @Override
+    public SiteInfo findSiteInfoBySiteName(String siteName) {
+        SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteName(siteName);
+        return siteInfo;
+    }
+
 }

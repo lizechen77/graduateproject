@@ -13,10 +13,10 @@
 	</style>
 </head>
 <body>
-	<div style="width:100%;float:right;padding-right:40px;">
-		<span class="pull-right" ><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+	<div style="width:100%;float:right;padding-right:10px;">
+		<span class="pull-right" style="padding-left:30px"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
 		<span class="pull-right" th:text="'身份 : '+${session.roleID}">用户名&nbsp;&nbsp;</span>
-		<span class="pull-right" th:text="'用户名 : '+${session.userID}+', '">身份&nbsp;&nbsp;</span>
+		<span class="pull-right" th:text="'用户名 : '+${session.userID}+','">身份&nbsp;&nbsp;</span>
 	</div>
 	<!--  巨幕-->
 	<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
@@ -36,8 +36,7 @@
 		<li style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
 		<li style="text-align:center;"><a th:href="@{/department/mySiteApplicationInfo}">我的审批状态</a></li>
 		<li style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
-		<li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
-
+    	<li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
 	</ul>
 	<!--导航内容-->
 	<div class="tab-content" style="padding:50px 0px 150px 0px;">
@@ -45,24 +44,26 @@
 		<div class="tab-pane active" id="search">
 			<!-- 搜索栏-->
 			<div>
-				<form th:action="@{/department/findSiteApplicationInfo}">
+				<form th:action="@{/department/findSiteApplicationInfo}" target="postTo">
 					<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z" style="margin-left:80px">
 						活动时间:
-				    	<input size="23" type="text" th:name="beginTime1"/>
+				    	<input id="startTime" size="23" type="text" th:name="beginTime1"/>
 				    	<span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
 				   		 <span>--&nbsp;</span>
 					</div>
 
 					<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
-						<input size="23" type="text" th:name="beginTime2" />
+						<input id="endTime" size="23" type="text" th:name="beginTime2" />
 				  	  <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
 					</div>
 
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：</span>
 					<input size="15" type="text" th:name="locale" />
-					<button class="glyphicon glyphicon-search"></button>
+					<button class="glyphicon glyphicon-search" onclick="timeCheck()"></button>
 				</form>
-				<table class="table table-bordered" style="margin:40px 0 0 350px;width:800px;">
+				<iframe name="postTo" style="display:none"></iframe> 
+
+				<table class="table table-bordered" style="margin:40px 0 0 350px;width:880px;">
 					<thead>
 						<tr>
 							<th style="width:140px;">
@@ -106,7 +107,7 @@
 				</table>
 			</div>
 			<!--页码-->
-			<nav style="margin-left:650px">
+			<nav style="mmargin:50px auto;width: 200px;height: 50px;padding-top:50px;">
 				<ul class="pagination" th:if="${page.getPageCount()} != 0">
 					<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
 						<a th:href="@{/department/findSiteApplicationInfo(pageNumber=${i})}" th:text="${i}">123</a>
@@ -122,7 +123,7 @@
 <script th:src="@{../js/bootstrap-datetimepicker.min.js}"></script>
 <script th:src="@{../js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
 <script type="text/javascript">
-
+	/*<![CDATA[*/
     $(".form_datetime").datetimepicker({
         format: "yyyy-MM-dd hh:ii:ss",
         autoclose: true,
@@ -131,7 +132,35 @@
         minuteStep: 10,
         language:  'zh-CN'
     });
-
+    function timeCheck()
+    	{
+		    var startTime = document.getElementById("startTime").value;   
+		    var endTime = document.getElementById("endTime").value;   
+    	 	if(startTime!=""&&endTime!="")
+    	 	{
+			    var begin=new Array();
+			    var end=new Array();
+			    begin=startTime.split("-");
+			    end=endTime.split("-");
+			    var beginnum=begin[0]+begin[1]+begin[2];
+			    var endnum=end[0]+end[1]+end[2];
+	      		if(endnum<beginnum)
+	      		{
+	       			alert("对不起，结束时间必须大于开始时间");
+	    	 		return false;         
+				}  
+				else 
+				{   
+		    		alert("通过");   
+		    		return true;  
+		    	} 
+	      	}
+	      	else if(startTime!=""&&endTime==""||startTime==""&&endTime!="")
+			{
+		    	alert("请填写完整日期时间")
+		    }
+		}
+    /*]]>*/
 </script> 
 </body>
 </html>

@@ -16,4 +16,5 @@ public interface SiteManagerDao {
     CurrentPage findUnapprovedSiteApplication(int pageNumber);
     CurrentPage findApprovedSiteApplication(int pageNumber);
     Integer approve(int applicationID, String status);
+    CurrentPage findAllUser(int pageNumber);
 }

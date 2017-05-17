@@ -16,4 +16,5 @@ public interface SiteManagerService {
     CurrentPage findUnapproveSiteApplication(int pageNumber);
     CurrentPage findApprovedSiteApplication(int pageNumber);
     Integer approve(int applicationID, String status);
+    CurrentPage findAllUser(int pageNumber);
 }

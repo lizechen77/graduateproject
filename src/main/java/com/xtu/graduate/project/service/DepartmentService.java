@@ -12,5 +12,5 @@ import java.util.Map;
  */
 public interface DepartmentService {
     CurrentPage findSiteApplicationInfo(String userID, String locale, Date beginTime1, Date beginTime2, int pageNumber);
-    Integer createSiteApplication(SiteApplication siteApplication);
+    Integer createSiteApplication(SiteApplication siteApplication, String siteName);
 }

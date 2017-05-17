@@ -59,10 +59,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Integer createSiteApplication(SiteApplication siteApplication) {
-        String siteID = siteApplication.getSiteID();
-        SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteID(siteID);
+    public Integer createSiteApplication(SiteApplication siteApplication, String siteName) {
+        SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteName(siteName);
+        if (siteInfo == null) {
+            LOGGER.info("场地信息不存在");
+            return 0;
+        }
+        String siteID = siteInfo.getSiteID();
+        int rows = this.commonDao.whetherHasApproved(siteID, siteApplication.getBeginTime());
+        if (rows == 1) {
+            LOGGER.info("该时间段的场地已被申请");
+            return -1;
+        }
         String siteManagerID = siteInfo.getSiteManagerID();
+        siteApplication.setSiteID(siteID);
         siteApplication.setSiteManagerID(siteManagerID);
         return this.departmentDao.createSiteApplication(siteApplication);
     }

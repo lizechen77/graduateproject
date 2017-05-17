@@ -17,8 +17,8 @@
     </style>
 </head>
 <body>
-    <div style="width:100%;float:right;padding-right:40px;">
-        <span class="pull-right" ><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+    <div style="width:100%;float:right;padding-right:10px;">
+        <span class="pull-right" style="padding-left:30px"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
         <span class="pull-right" th:text="'身份 : '+${session.roleID}">用户名&nbsp;&nbsp;</span>
         <span class="pull-right" th:text="'用户名 : '+${session.userID}+', '">身份&nbsp;&nbsp;</span>
     </div>
@@ -43,33 +43,33 @@
     <li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
 </ul>
 <!--导航内容-->
-<div class="tab-content" style="padding:50px 0px 150px 0px;">
+<div class="tab-content" style="padding:50px 0px 150px 250px;">
     <!-- 活动申请-->
     <form th:action="@{/department/createSiteApplication}" method="POST">
     <div class="tab-pane" id="apply" style="width:100%">
-        <div class="col-sm-4" style="margin:15px">
+        <div class="col-sm-3" style="margin:15px">
             <span>活动名称：</span>
-            <input type="text" size="30" th:name="activityName" />
+            <input id="a" type="text" th:name="departmentID" />
+        </div>
+        <div class="col-sm-3" style="margin:15px">
+            <span>活动地点：</span>
+            <input id="b" type="text" th:name="activityName" />
         </div>
         <div class="col-sm-8" style="margin:15px">
             <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
                 活动持续时间:
-                <input size="23" type="text" th:name="beginTime" />
+                <input id="c" size="23" type="text" th:name="beginTime" />
                 <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
                 <span>--&nbsp;</span>
             </div>
             <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
-                <input size="23" type="text" th:name="endTime" />
+                <input id="d" size="23" type="text" th:name="endTime" />
                 <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
             </div>
         </div>
-        <div class="col-sm-8" style="margin:15px">
-            <span>活动地点：</span>
-            <input type="text" th:name="siteID" />
-        </div>
         <div class="col-sm-3" style="margin:15px">
             <span>活动介绍（200-250字之间）：</span>
-            <textarea type="text" style="width:600px;height:300px;" th:name="details"></textarea>
+            <textarea id="f" type="text" style="width:600px;height:300px;" th:name="details"></textarea>
         </div>
         <br />
         <div class="col-sm-5 col-sm-offset-3">
@@ -85,8 +85,8 @@
 <script th:src="@{../js/bootstrap-datetimepicker.js}"></script>
 <script th:src="@{../js/locals/bootstrap-datetimepicker.fr.js}"></script>
 <script th:src="@{../js/bootstrap-datetimepicker.min.js}"></script><script th:src="@{../js/locals/bootstrap-datetimepicker.zh-CN.js}"></script>
-<script type="text/javascript">
-
+<script th:inline="javascript">
+    /*<![CDATA[*/
     $(".form_datetime").datetimepicker({
         format: "yyyy-MM-dd hh:ii:ss",
         autoclose: true,
@@ -95,7 +95,24 @@
         minuteStep: 10,
         language:  'zh-CN'
     });
-
+    function check(){
+        if(document.getElementById("a").value==""||document.getElementById("b").value==""||document.getElementById("c").value==""||document.getElementById("d").value==""||document.getElementById("e").value==""||document.getElementById("f").value=="")
+            {
+            alert("有未填项，请重新填写！");
+            return false;
+            }
+        else if(document.getElementById("f").value.length<=200||document.getElementById("f").value.length>=300)
+        {
+            alert("字数不符合要求！");
+            return false;
+        }
+        else
+        {
+            alert("提交成功！")
+            return true;
+        }       
+    };
+    /*]]>*/
 </script>
 </body>
 </html>

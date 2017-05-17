@@ -12,6 +12,9 @@
 		}
 	</style>
 <body>
+	<div style="width:100%;float:right;padding-right:10px;">
+    	<span class="pull-right"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+	</div>
 	<!--  巨幕-->
 	<div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
 		<div class="container">
@@ -28,10 +31,11 @@
 	<ul class="nav nav-pills nav-stacked col-sm-2" style="margin:35px 130px 150px 0;height:100%;">
 		<li style="text-align:center;"><a href="#done" th:href="@{/siteManager/findApprovedSiteApplication}">已审批活动</a></li>
 		<li  class="active" style="text-align:center;"><a href="#doing" th:href="@{/siteManager/findUnapproveSiteApplication}">待审批活动</a></li>
-		<li style="text-align:center;"><a href="#add" th:href="@{/siteManager/createUser}">新增用户</a></li>
+		<li style="text-align:center;"><a href="#add" th:href="@{/siteManager/findAllUser}">用户管理</a></li>
+    	<li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
 	</ul>
 	<!--导航内容-->
-	<div class="tab-content" style="padding:40px 150px 150px 150px;">
+	<div class="tab-content" style="padding:40px 150px 150px 200px;">
 		<!--未审批活动-->
 		<div class="tab-pane active" id="done">
 
@@ -63,9 +67,10 @@
 						</tr>
 					</thead>
 					<tbody>
+					<form th:action="@{/siteManager/approve}">
 						<tr th:each="siteApplicationInfoList,siteApplicationInfoListStat : ${page.getList()}">
-							<th style="width:100px" th:text="${siteApplicationInfoList.applicationID}">
-								1
+							<th style="width:100px">
+								<input th:value="${siteApplicationInfoList.applicationID}" th:name="applicationID" />
 							</th>
 
 							<th style="width:250px" th:text="${siteApplicationInfoList.departmentID}">
@@ -81,19 +86,16 @@
 								2016.12.5 19:00
 							</th>
 							<th style="width:300px">
-								<button class="btn btn-success">
-									<a th:href="@{/siteManager/approve}">批准</a>
-								</button>
-								<button class="btn btn-danger">
-									<a th:href="@{/siteManager/approve}">不批准</a>
-								</button>
+								<input class="btn btn-success" type="submit" th:name="approve" value="批准" />
+								<input class="btn btn-danger" type="submit" th:name="unApprove" value="不批准" />
 							</th>
 						</tr>
+					</form>
 					</tbody>
 				</table>
 			</div>
 			<!--页码-->
-			<div>
+			<nav style="margin:50px auto;width:200px;height:50px;padding-top:50px">
 				<ul class="pagination" th:if="${page.getPageCount()} != 0"	>
 					<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
 						<a th:href="@{/siteManager/findUnapproveSiteApplication(pageNumber=${i})}" th:text="${i}">
@@ -101,7 +103,7 @@
 						</a>
 					</li>
 				</ul>
-			</div>
+			</nav>
 		</div>
 	</div>
 </div>

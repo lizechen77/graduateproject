@@ -13,10 +13,10 @@
     </style>
 </head>
 <body>
-    <div style="width:100%;float:right;padding-right:40px;">
-       <span class="pull-right" ><a style="color:#000000" th:href="@{/logout}">注销</a></span>
+    <div style="width:100%;float:right;padding-right:10px;">
+       <span class="pull-right" style="padding-left:30px"><a style="color:#000000" th:href="@{/logout}">注销</a></span>
        <span class="pull-right" th:text="'身份 : '+${session.roleID}">用户名&nbsp;&nbsp;</span>
-       <span class="pull-right" th:text="'用户名 : '+${session.userID}+', '">身份&nbsp;&nbsp;</span>
+       <span class="pull-right" th:text="'用户名 : '+${session.userID}+','">身份&nbsp;&nbsp;</span>
     </div>
 <!--  巨幕-->
 <div class="jumbotron" style="background-color:#EFEFEF;margin:0px">
@@ -47,7 +47,7 @@
     <div class="tab-pane" id="plan" style="margin-left:400px;">
         <h4>您已申请的活动：</h4>
         <div>
-            <table class="table table-bordered" style="margin:30px 0 0 0;width:800px;">
+            <table class="table table-bordered" style="margin-top:30px;width:800px;">
                 <thead>
                 <tr>
                     <th style="width:140px;">
@@ -97,15 +97,13 @@
             </table>
         </div>
         <!--页码-->
-        <div>
-            <nav style="margin-left:280px">
-                <ul class="pagination" th:if="${page.getPageCount()} != 0">
-                    <li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
-                        <a th:href="@{/department/mySiteApplicationInfo(pageNumber=${i})}"  th:text="${i}">1</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <nav style="margin:50px auto;width:200px;height:50px;padding:50px">
+            <ul class="pagination" th:if="${page.getPageCount()} != 0">
+                <li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
+                       <a th:href="@{/department/mySiteApplicationInfo(pageNumber=${i})}"  th:text="${i}">1</a>
+                </li>
+            </ul>
+        </nav>
     </div>
     </div>
 </div>
