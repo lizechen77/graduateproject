@@ -32,7 +32,7 @@
     <li style="text-align:center;"><a href="#done" th:href="@{/siteManager/findApprovedSiteApplication}">已审批活动</a></li>
     <li style="text-align:center;"><a href="#doing" th:href="@{/siteManager/findUnapproveSiteApplication}">待审批活动</a></li>
     <li class="active" style="text-align:center;"><a href="#add" th:href="@{/siteManager/findAllUser}">用户管理</a></li>
-    <li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
+    <li style="text-align:center;"><a th:href="@{/siteManager/changePassword}">修改密码</a></li>
 </ul>
 <!--导航内容-->
 <div class="tab-content" style="padding:40px 150px 150px 150px;">
@@ -54,9 +54,9 @@
                 <form role="form">
                     <div class="form-group">
                         <span>用户类型：</span>
-                        <select class="input-md" style="width:177px;height:27px"> 
-                            <option th:name="roleID">部门用户</option> 
-                            <option th:name="roleID">场地管理员</option>  
+                        <select class="input-md" style="width:177px;height:27px" th:name="roleID">
+                            <option value="部门用户">部门用户</option>
+                            <option value="场地管理员">场地管理员</option>
                         </select>
                     </div>
                 </form>

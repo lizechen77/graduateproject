@@ -36,7 +36,7 @@
 		<li style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
 		<li style="text-align:center;"><a th:href="@{/department/mySiteApplicationInfo}">我的审批状态</a></li>
 		<li style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
-    	<li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
+    	<li style="text-align:center;"><a th:href="@{/department/changePassword}">修改密码</a></li>
 	</ul>
 	<!--导航内容-->
 	<div class="tab-content" style="padding:50px 0px 150px 0px;">
@@ -90,13 +90,13 @@
 								1
 							</th>
 
-							<th style="width:250px" th:text="${siteApplicationInfoList.departmentID}">
+							<th style="width:250px" th:text="${siteApplicationInfoList.userName}">
 								公共管理学院
 							</th>
 							<th style="width:300px" th:text="${siteApplicationInfoList.activityName}">
 								<a href="#" style="color:#000000;">新生才艺大赛</a>
 							</th>
-							<th style="width:200px " th:text="${siteApplicationInfoList.siteID}">
+							<th style="width:200px " th:text="${siteApplicationInfoList.siteName}">
 								俱乐部
 							</th>
 							<th style="width:300px" th:text="${siteApplicationInfoList.beginTime}">

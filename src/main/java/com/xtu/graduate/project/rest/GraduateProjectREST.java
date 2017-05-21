@@ -105,9 +105,14 @@ public class GraduateProjectREST {
         return new ModelAndView("/index");
     }
 
-    @RequestMapping(value = "changePassword", method = RequestMethod.GET)
-    public ModelAndView changePassword() {
-        return new ModelAndView("changePassword");
+    @RequestMapping(value = "siteManager/changePassword", method = RequestMethod.GET)
+    public ModelAndView siteManagerChangePassword() {
+        return new ModelAndView("siteManager/changePassword");
+    }
+
+    @RequestMapping(value = "department/changePassword", method = RequestMethod.GET)
+    public ModelAndView departmentChangePassword() {
+        return new ModelAndView("department/changePassword");
     }
 
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
@@ -333,7 +338,7 @@ public class GraduateProjectREST {
     public ModelAndView deleteUser(HttpServletRequest request) {
         String userID = request.getParameter("userID");
         int row = this.siteManagerService.deleteUserByUserID(userID);
-        return new ModelAndView("redirect:siteManager/findAllUser");
+        return new ModelAndView("redirect:/siteManager/findAllUser");
     }
 
     @RequestMapping("siteManager/findApprovedSiteApplication")

@@ -30,8 +30,12 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public CurrentPage findAllSiteApplication(int pageNumber) {
-        String sql1 = "select * from siteApplication where status = '待审批' LIMIT ?,?";
-        String sql2 = "select count(*) from siteApplication where status = '待审批'";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteApplication " +
+                "inner join user on siteApplication.departmentID = user.userID)inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID where status = '待审批' LIMIT ?,?";
+        String sql2 = "select count(*) from (siteApplication " +
+                "inner join user)inner join siteInfo where status = '待审批' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -54,9 +58,10 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public CurrentPage findSiteApplicationByLocale(String locale, int pageNumber) {
-        String sql1 = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
-                "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
-                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '待审批' LIMIT ?,?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteapplication inner join siteInfo on " +
+                "siteapplication.siteID = siteInfo.siteID)inner join user on siteApplication.userID = user.userID " +
+                "where siteInfo.locale = ? and status = '待审批' LIMIT ?,?";
         String sql2 = "select count(*) from siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and status = '待审批'";
         List<Map<String, Object>> list;
@@ -81,7 +86,10 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public CurrentPage findSiteApplicationByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql1 = "select * from siteApplication where beginTime between ? and ? and status = '待审批' LIMIT ?,?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from " +
+                "(siteApplication inner join user on siteApplication.departmentID = user.userID)" +
+                "inner join siteInfo on siteApplicationID.siteID = siteApplication.siteID where beginTime between ? and ? and status = '待审批' LIMIT ?,?";
         String sql2 = "select count(*) from siteApplication where beginTime between ? and ? and status = '待审批'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
@@ -105,9 +113,10 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public CurrentPage findSiteApplicationByLocaleAndBeginTime(String locale, Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql1 = "select ApplicationID, status, siteApplication.siteID, details, beginTime, " +
-                "endTime, departmentID, siteApplication.siteManagerID, activityName from siteapplication inner join siteInfo on " +
-                "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and beginTime between ? and ? " +
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteapplication inner join siteInfo on " +
+                "siteapplication.siteID = siteInfo.siteID) inner join user on siteApplication.departmentID = user.userID " +
+                "where siteInfo.locale = ? and beginTime between ? and ? " +
                 "and status = '待审批' LIMIT ?,?";
         String sql2 = "select count(*) from siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID where siteInfo.locale = ? and beginTime between ? and ? " +
@@ -135,9 +144,10 @@ public class DepartmentDaoImpl implements DepartmentDao{
 
     @Override
     public CurrentPage findSiteApplicationByDepartmentID(String departmentID, int pageNumber) {
-        String sql1 = "select ApplicationID, status, siteID, details, beginTime, " +
-                "endTime, departmentID, siteManagerID, activityName from siteApplication " +
-                "where departmentID = ? LIMIT ?,?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteApplication " +
+                "inner join user on siteApplication.departmentID = user.userID)inner join siteInfo on siteApplication.siteID = " +
+                "siteInfo.siteID where departmentID = ? LIMIT ?,?";
         String sql2 = "select count(*) from siteApplication " +
                 "where departmentID = ?";
         List<Map<String, Object>> list;

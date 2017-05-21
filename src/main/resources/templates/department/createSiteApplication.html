@@ -40,7 +40,7 @@
     <li class="active" style="text-align:center;"><a th:href="@{/department/createSiteApplication}">场地申请</a></li>
     <li style="text-align:center;"><a th:href="@{/department/mySiteApplicationInfo}">我的审批状态</a></li>
     <li style="text-align:center;"><a th:href="@{/department/siteApplicationInstruction}">申请说明</a></li>
-    <li style="text-align:center;"><a th:href="@{/changePassword}">修改密码</a></li>
+    <li style="text-align:center;"><a th:href="@{/department/changePassword}">修改密码</a></li>
 </ul>
 <!--导航内容-->
 <div class="tab-content" style="padding:50px 0px 150px 250px;">
@@ -49,11 +49,11 @@
     <div class="tab-pane" id="apply" style="width:100%">
         <div class="col-sm-3" style="margin:15px">
             <span>活动名称：</span>
-            <input id="a" type="text" th:name="departmentID" />
+            <input id="a" type="text" th:name="activityName" />
         </div>
         <div class="col-sm-3" style="margin:15px">
             <span>活动地点：</span>
-            <input id="b" type="text" th:name="activityName" />
+            <input id="b" type="text" th:name="siteName" />
         </div>
         <div class="col-sm-8" style="margin:15px">
             <div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
