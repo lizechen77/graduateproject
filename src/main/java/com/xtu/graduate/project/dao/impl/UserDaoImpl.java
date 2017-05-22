@@ -30,16 +30,15 @@ public class UserDaoImpl implements UserDao {
     //通过activityName查找activityInfo
     @Override
     public CurrentPage findActivityInfoByActivityName(String activityName, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID  where siteApplication.activityName=?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? " +
+                "and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? " +
+                "and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -63,17 +62,15 @@ public class UserDaoImpl implements UserDao {
     //通过locale查找activityInfo
     @Override
     public CurrentPage findActivityInfoByLocale(String locale, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
-                "inner join user on activityInfo.departmentID = user.userID where locale =? " +
-                "and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)" +
-                "inner join user on activityInfo.departmentID = user.userID where locale =?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where locale =? " +
+                "and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where locale =? " +
+                "and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -97,15 +94,13 @@ public class UserDaoImpl implements UserDao {
     //通过beginTime查找activityInfo
     @Override
     public CurrentPage findActivityInfoByBeginTime(Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteInfo on activityInfo.siteID = " +
-                "siteInfo.siteID) inner join user on activityInfo.departmentID = user.userID) inner join siteApplication" +
-                " on activityInfo.applicationID = siteApplication.applicationID where beginTime BETWEEN ? and ? " +
-                "and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteInfo on activityInfo.siteID = " +
-                "siteInfo.siteID) inner join user on activityInfo.departmentID = user.userID) inner join siteApplication" +
-                " on activityInfo.applicationID = siteApplication.applicationID where beginTime BETWEEN ? and ?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where beginTime BETWEEN ? and ? and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where beginTime BETWEEN ? and ? and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -129,17 +124,15 @@ public class UserDaoImpl implements UserDao {
     //通过activityName和locale查找activityInfo
     @Override
     public CurrentPage findActivityInfoByActivityNameAndLocale(String activityName, String locale, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and siteInfo.locale=? " +
-                "and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID )inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and siteInfo.locale=?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and siteInfo.locale=? " +
+                "and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from(siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and siteInfo.locale=? " +
+                "and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -164,16 +157,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public CurrentPage findActivityInfoByActivityNameAndBeginTime(String activityName,
                                                                                  Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? ";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and beginTime between ? and ? " +
+                "and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and beginTime between ? and ? and status = '审批通过' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -197,16 +188,13 @@ public class UserDaoImpl implements UserDao {
     //通过locale和beginTime查找activityInfo
     @Override
     public CurrentPage findActivityInfoByLocaleAndBeginTime(String locale, Date beginTime1,Date beginTime2, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where beginTime between ? and ? and locale=? and status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where beginTime between ? and ? and locale=? ";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where beginTime between ? and ? and locale=? and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where beginTime between ? and ? and locale=? and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -230,18 +218,16 @@ public class UserDaoImpl implements UserDao {
     //通过activityName和locale和beginTime查找activityInfo
     @Override
     public CurrentPage findActivityInfoByActivityNameAndLocaleAndBeginTime(String activityName, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? " +
-                "and locale=? and status = '审批通过' LIMIT ?,?";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and beginTime between ? and ? " +
+                "and locale=? and status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
 
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID )inner join user on activityInfo.departmentID = " +
-                "user.userID where siteApplication.activityName=? and beginTime between ? and ? and locale=?";
+        String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where siteApplication.activityName=? and beginTime between ? and ? " +
+                "and locale=? and status = '审批通过'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -264,16 +250,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public CurrentPage findAllActivityInfo(int pageNumber) {
-        String sql1 = "select activityInfo.activityID, activityInfo.applicationID, activityInfo.departmentID, " +
-                "activityInfo.siteID, siteApplication.activityName, siteApplication.details, siteApplication.beginTime, " +
-                "user.userName, siteInfo.siteName from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where status = '审批通过' LIMIT ?,?";
-        String sql2 = "select count(*) from ((activityInfo inner join siteApplication on " +
-                "activityInfo.applicationID = siteApplication.applicationID)" +
-                "inner join siteInfo on activityInfo.siteID = siteInfo.siteID)inner join user on activityInfo.departmentID = " +
-                "user.userID where status = '审批通过' ";
+        String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
+                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
+        String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +
+                "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
+                "where status = '审批通过' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;

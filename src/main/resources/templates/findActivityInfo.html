@@ -2,7 +2,7 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
-	<title>departmentSearch</title>
+	<title>查看活动信息</title>
 	<link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
 	<link rel="stylesheet" th:href="@{css/bootstrap-datetimepicker.min.css}" />
 	<style>
@@ -29,7 +29,7 @@
 
 	<div>
 		<!--搜索栏-->
-		<form th:action="@{/findActivityInfo}" target="postTo">
+		<form th:action="@{/findActivityInfo}">
 			<div style="margin:20px 0 0 200px;">
 				<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z">
 					活动时间:
@@ -48,7 +48,6 @@
 			    <button class="glyphicon glyphicon-search" onclick="timeCheck()"></button>
 			</div>
 		</form>
-		<iframe name="postTo" style="display:none"></iframe> 
 		<!--表格内容-->
 		<table class="table table-bordered" style="margin:40px 0 0 250px;width:880px">
 			<thead>
@@ -73,7 +72,7 @@
 			</thead>
 			<tbody>
 				<tr th:each= "activityList, activityListStat : ${page.getList()}">
-					<th style="width:100px" th:text="${activityList.activityID}">
+					<th style="width:100px" th:text="${activityList.applicationID}">
 						1
 					</th>
 
@@ -97,7 +96,7 @@
 	<nav style="margin:50px auto;width: 200px;height: 50px;padding-top:50px;">
 		<ul class="pagination" th:if="${page.getPageCount()} != 0">
 			<li th:each="i : ${#numbers.sequence(1, page.getPageCount())}">
-				<a th:href="@{/department/mySiteApplicationInfo(pageNumber=${i})}"  th:text="${i}">1</a>
+				<a th:href="@{/findActivityInfo(pageNumber=${i})}"  th:text="${i}">1</a>
 			</li>
 		</ul>
 	</nav>

@@ -65,10 +65,15 @@ public class GraduateProjectREST {
     }
 
     @RequestMapping("/index")
-    public ModelAndView index() { return new ModelAndView("index"); }
+    public ModelAndView index() {
+        CurrentPage page = this.userService.findActivityInfo(null, null, null, null, 1);
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("page", page);
+        return mav;
+    }
 
-    @RequestMapping(value = "/index", method = RequestMethod.POST)
-    public ModelAndView index(HttpServletRequest request) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView login(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         String userID = request.getParameter("userID");
         String password = request.getParameter("password");
@@ -149,7 +154,6 @@ public class GraduateProjectREST {
         String tempBeginTime1 = request.getParameter("beginTime1");
         String tempBeginTime2 = request.getParameter("beginTime2");
         int pageNumber = 1;
-        LOGGER.info("activityName = {}", activityName);
         if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
@@ -167,6 +171,7 @@ public class GraduateProjectREST {
         CurrentPage page = this.userService.findActivityInfo(activityName, locale, beginTime1, beginTime2, pageNumber);
         ModelAndView mav = new ModelAndView("findActivityInfo");
         mav.addObject("page", page);
+        LOGGER.info("list size = {}", page.getList().size());
         return mav;
     }
 
@@ -251,6 +256,7 @@ public class GraduateProjectREST {
         CurrentPage page = this.departmentService.findSiteApplicationInfo(null, locale, beginTime1, beginTime2, pageNumber);
         ModelAndView mav = new ModelAndView("department/findSiteApplicationInfo");
         mav.addObject("page", page);
+        LOGGER.info("page size = {}", page.getPageCount());
         return mav;
     }
 

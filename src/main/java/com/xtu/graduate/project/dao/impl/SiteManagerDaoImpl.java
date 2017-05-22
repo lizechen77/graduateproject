@@ -47,7 +47,8 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
         String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
                 "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from " +
                 "(siteApplication inner join user on siteApplication.departmentID = user.userID) " +
-                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID where status = '待审批' LIMIT ?,?";
+                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID where" +
+                " status = '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
         String sql2 = "select count(*) from siteApplication where status = '待审批' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
@@ -74,7 +75,8 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
         String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
                 "siteInfo.siteName, siteApplication.beginTime,siteApplication.status " +
                 "from (siteApplication inner join user on siteApplication.departmentID = user.userID) " +
-                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID where status <> '待审批' LIMIT ?,?";
+                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID " +
+                "where status <> '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
         String sql2 = "select count(*) from siteApplication where status <> '待审批'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
@@ -105,7 +107,7 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
 
     @Override
     public CurrentPage findAllUser(int pageNumber) {
-        String sql1 = "select * from user LIMIT ?,?";
+        String sql1 = "select * from user ORDER BY userID ASC LIMIT ?,?";
         String sql2 = "select count(*) from user";
         List<Map<String, Object>> list;
         Integer tempPageCount;

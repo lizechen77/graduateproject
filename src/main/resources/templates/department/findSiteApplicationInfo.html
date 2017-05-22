@@ -2,7 +2,7 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
-	<title>学生用户界面</title>
+	<title>部门用户</title>
 	<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}" />
 	<link rel="stylesheet" th:href="@{../css/bootstrap-datetimepicker.min.css}" />
 	<style>
@@ -44,7 +44,7 @@
 		<div class="tab-pane active" id="search">
 			<!-- 搜索栏-->
 			<div>
-				<form th:action="@{/department/findSiteApplicationInfo}" target="postTo">
+				<form th:action="@{/department/findSiteApplicationInfo}">
 					<div class="input-append date form_datetime pull-left" data-date="2013-02-21T15:25:00Z" style="margin-left:80px">
 						活动时间:
 				    	<input id="startTime" size="23" type="text" th:name="beginTime1"/>
@@ -58,10 +58,9 @@
 					</div>
 
 					<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地点：</span>
-					<input size="15" type="text" th:name="locale" />
+					<input type="text" th:name="locale" />
 					<button class="glyphicon glyphicon-search" onclick="timeCheck()"></button>
 				</form>
-				<iframe name="postTo" style="display:none"></iframe> 
 
 				<table class="table table-bordered" style="margin:40px 0 0 350px;width:880px;">
 					<thead>
@@ -84,7 +83,7 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody th:if="${not #lists.isEmpty(page.getList())}">
+					<tbody th:if="${page.getList() != null}">
 						<tr th:each= "siteApplicationInfoList,siteApplicationInfoListStat : ${page.getList()}">
 							<th style="width:100px" th:text="${siteApplicationInfoList.applicationID}">
 								1

@@ -84,41 +84,15 @@
 	<!-- 活动分类框-->
 	<div style="margin-bottom:500px">
 		<!--第一个-->
-		<div class="panel panel-default col-md-3 col-md-offset-1"  style="margin:30px 20px 20px 80px;height:320px">
-			<div class="panel-heading">
-				<h3 class="glyphicon glyphicon-grain"> 文体活动</h3>    <!-- 表格标题-->
+		<div class="panel panel-default col-md-3 col-md-offset-1"  style="margin:30px 80px 20px 80px;">
+			<div class="panel-heading" style="text-align: center">
+				<h3 class="glyphicon glyphicon-grain"> 活动列表</h3>    <!-- 表格标题-->
 			</div>
-			<ul class="list-group">
-				<li class="list-group-item"><a href="#" style="color:#000000;">商学院第二十三届“挑战杯”辩论赛盛大开幕</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院新生才艺大赛</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">外国语学院英语演讲比赛</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
+			<ul class="list-group" style="text-align: center">
+				<li class="list-group-item" th:each="siteApplicationInfoList,siteApplicationInfoListStat : ${page.getList()}">
+					<a href="#" style="color:#000000;" th:text="${siteApplicationInfoList.activityName}"></a>
+				</li>
 
-			</ul>
-		</div>
-		<!--第二个-->
-		<div class="panel panel-default col-md-3" style="margin:30px 20px 20px 30px;height:320px">
-			<div class="panel-heading">
-			<h3 class="glyphicon glyphicon-duplicate"> 学术活动</h3>    <!-- 表格标题-->
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院 （第十届研究生学术文化节） 名师论坛第一场</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">【公管讲堂】段艳文：中国学术期刊转型与发展</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">外国语学院英语演讲比赛</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
-
-			</ul>
-		</div>
-		<!--第三个-->
-		<div class="panel panel-default col-md-3" style="margin:30px 20px 20px 30px;height:320px">
-			<div class="panel-heading">
-			<h3 class="glyphicon glyphicon-cd"> 娱乐活动</h3>       <!-- 表格标题-->
-			</div>
-			<ul class="list-group">
-				<li class="list-group-item"><a href="#" style="color:#000000">商学院“Superstar”比赛启动</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">公共管理学院新生才艺大赛</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">声乐协会第十八届校园歌手大赛</a></li>
-				<li class="list-group-item"><a href="#" style="color:#000000">数学院数学建模比赛</a></li>
 			</ul>
 		</div>
 		<!--  右侧按钮-->
@@ -137,7 +111,7 @@
 				      	</div>
 
 				      	<div class="modal-footer" style="padding:32px">
-				        	<form th:action="@{/index}" class="form col-md-10 form-horizontal center-block" method="post">
+				        	<form th:action="@{/login}" class="form col-md-10 form-horizontal center-block" method="post">
 					          	<div class="form-group">
 					          		<label class="col-sm-4 control-label">账号</label>
 					          		<div class="col-sm-8">
