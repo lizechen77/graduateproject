@@ -15,6 +15,7 @@ public class SiteApplication {
     private String siteID;
     private String details;
     private String activityName;
+    private String imgName;
 
     public Integer getApplicationID() {
         return applicationID;
@@ -86,5 +87,13 @@ public class SiteApplication {
 
     public void setActivityName(String activityName) {
         this.activityName = activityName;
+    }
+
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 }

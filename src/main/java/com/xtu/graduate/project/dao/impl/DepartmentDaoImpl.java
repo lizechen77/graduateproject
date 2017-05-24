@@ -187,10 +187,11 @@ public class DepartmentDaoImpl implements DepartmentDao{
         String departmentID = siteApplication.getDepartmentID();
         String siteManagerID = siteApplication.getSiteManagerID();
         String activityName = siteApplication.getActivityName();
+        String imgName = siteApplication.getImgName();
         String sql = "insert into siteApplication(status, siteID, details, beginTime, endTime, " +
-                "departmentID, siteManagerID, activityName) values('待审批', ?, ?, ?, ?, ? ,?, ?)";
+                "departmentID, siteManagerID, activityName, imgName) values('待审批', ?, ?, ?, ?, ? ,?, ?, ?)";
         int rows = jdbcTemplate.update(sql, new Object[] {siteID, details, beginTime, endTime,
-        departmentID, siteManagerID, activityName});
+        departmentID, siteManagerID, activityName, imgName});
         return rows;
     }
 }

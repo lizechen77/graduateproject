@@ -251,7 +251,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public CurrentPage findAllActivityInfo(int pageNumber) {
         String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
-                "siteInfo.siteName, siteApplication.beginTime from (siteApplication inner join siteInfo on " +
+                "siteInfo.siteName, siteApplication.beginTime, siteApplication.imgName from (siteApplication inner join siteInfo on " +
                 "siteApplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
                 "where status = '审批通过' ORDER BY siteapplication.applicationID DESC LIMIT ?,?";
         String sql2 = "select count(*) from (siteApplication inner join siteInfo on " +

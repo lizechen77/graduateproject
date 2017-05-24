@@ -16,6 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -23,10 +24,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import ch.qos.logback.core.util.FileUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -69,6 +75,7 @@ public class GraduateProjectREST {
         CurrentPage page = this.userService.findActivityInfo(null, null, null, null, 1);
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("page", page);
+        LOGGER.info("{}", page.getList().get(0).get("imgName"));
         return mav;
     }
 
@@ -187,7 +194,7 @@ public class GraduateProjectREST {
     }
 
     @RequestMapping(value = "department/createSiteApplication",method = RequestMethod.POST)
-    public ModelAndView createSiteApplication(HttpServletRequest request) {
+    public ModelAndView createSiteApplication(MultipartFile file, HttpServletRequest request) {
         LOGGER.info("正在创建场地申请表");
         Date beginTime;
         Date endTime;
@@ -209,13 +216,29 @@ public class GraduateProjectREST {
         String departmentID = (String)session.getAttribute("userID");
         siteApplication.setDepartmentID(departmentID);
         String siteName = request.getParameter("siteName");
+        ModelAndView mav = new ModelAndView();
+        //文件上传
+        String fileName = file.getOriginalFilename();
+        String path = "e:graduateproject/src/main/resources/static/img/upload/";
+        File dest = new File(path+fileName);
+        siteApplication.setImgName(fileName);
+        try {
+            file.transferTo(dest);
+        } catch (IllegalStateException e) {
+            mav.setViewName("department/createSiteApplicationDefault");
+            mav.addObject("图片上传失败");
+            return mav;
+        } catch (IOException e) {
+            mav.setViewName("department/createSiteApplicationDefault");
+            mav.addObject("图片上传失败");
+            return mav;
+        }
         int row = 2;
         try {
             row = this.departmentService.createSiteApplication(siteApplication, siteName);
         }   catch (EmptyResultDataAccessException e) {
             LOGGER.info("Create site application error");
         }
-        ModelAndView mav = new ModelAndView();
         if (row == 0) {
             mav.setViewName("department/createSiteApplicationDefault");
             mav.addObject("info", "该场地不存在,请检查场地名是否正确");
@@ -398,10 +421,37 @@ public class GraduateProjectREST {
         return mav;
     }
 
-    @RequestMapping("test")
-    public String test() {
-        String sql = "delete from user where userID = 'student'";
-        int rows = this.jdbcTemplate.update(sql);
-        return ""+rows;
+    @RequestMapping(value = "test",method = RequestMethod.GET)
+    public ModelAndView test() {
+        return new ModelAndView("test");
     }
+    @RequestMapping("test")
+    public String test(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request) {
+        if (file.isEmpty()) {
+            return "文件为空";
+        }
+        String fileName = file.getOriginalFilename();
+        String path = "e:graduateproject/src/main/resources/static/img/upload/";
+        File dest = new File(path+fileName);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+
+            file.transferTo(dest);
+
+            return "上传成功";
+
+        } catch (IllegalStateException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return "上传失败";
+    }
+
 }

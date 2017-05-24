@@ -49,6 +49,7 @@ public class ShiroConfig {
         Map<String, String> chains = new LinkedHashMap<String, String>();
         chains.put("/index", "anon");
         chains.put("/findActivityInfo", "anon");
+        chains.put("/test", "anon");
         chains.put("/login", "anon");
         chains.put("/css/**", "anon");
         chains.put("/img/**", "anon");
