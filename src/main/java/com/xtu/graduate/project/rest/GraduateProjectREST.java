@@ -75,7 +75,6 @@ public class GraduateProjectREST {
         CurrentPage page = this.userService.findActivityInfo(null, null, null, null, 1);
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("page", page);
-        LOGGER.info("{}", page.getList().get(0).get("imgName"));
         return mav;
     }
 
@@ -84,7 +83,7 @@ public class GraduateProjectREST {
         ModelAndView mav = new ModelAndView();
         String userID = request.getParameter("userID");
         String password = request.getParameter("password");
-        UsernamePasswordToken token = new UsernamePasswordToken(userID,password);
+        UsernamePasswordToken token = new UsernamePasswordToken(userID, password);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.getSession(true);
         Session session = currentUser.getSession();
@@ -132,13 +131,13 @@ public class GraduateProjectREST {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.getSession(true);
         Session session = currentUser.getSession();
-        String userID = (String)session.getAttribute("userID");
+        String userID = (String) session.getAttribute("userID");
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
-        String roleID = (String)session.getAttribute("roleID");
+        String roleID = (String) session.getAttribute("roleID");
         int rows = this.commonService.changePassword(userID, oldPassword, newPassword);
 
-        if (rows == 0 ) {
+        if (rows == 0) {
             if (roleID.equals("部门用户")) {
                 return new ModelAndView("department/changePasswordDefault");
             } else {
@@ -155,7 +154,7 @@ public class GraduateProjectREST {
 
     //游客
     @RequestMapping(value = "findActivityInfo")
-    public ModelAndView findActivityInfo(HttpServletRequest request){
+    public ModelAndView findActivityInfo(HttpServletRequest request) {
         String activityName = request.getParameter("activityName");
         String locale = request.getParameter("locale");
         String tempBeginTime1 = request.getParameter("beginTime1");
@@ -183,17 +182,13 @@ public class GraduateProjectREST {
     }
 
 
-
-
-
-
     //部门用户
-    @RequestMapping(value = "department/createSiteApplication",method = RequestMethod.GET)
+    @RequestMapping(value = "department/createSiteApplication", method = RequestMethod.GET)
     public ModelAndView createSiteApplication() {
         return new ModelAndView("department/createSiteApplication");
     }
 
-    @RequestMapping(value = "department/createSiteApplication",method = RequestMethod.POST)
+    @RequestMapping(value = "department/createSiteApplication", method = RequestMethod.POST)
     public ModelAndView createSiteApplication(MultipartFile file, HttpServletRequest request) {
         LOGGER.info("正在创建场地申请表");
         Date beginTime;
@@ -213,30 +208,32 @@ public class GraduateProjectREST {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.getSession(true);
         Session session = currentUser.getSession();
-        String departmentID = (String)session.getAttribute("userID");
+        String departmentID = (String) session.getAttribute("userID");
         siteApplication.setDepartmentID(departmentID);
         String siteName = request.getParameter("siteName");
         ModelAndView mav = new ModelAndView();
         //文件上传
-        String fileName = file.getOriginalFilename();
-        String path = "e:graduateproject/src/main/resources/static/img/upload/";
-        File dest = new File(path+fileName);
-        siteApplication.setImgName(fileName);
-        try {
-            file.transferTo(dest);
-        } catch (IllegalStateException e) {
-            mav.setViewName("department/createSiteApplicationDefault");
-            mav.addObject("图片上传失败");
-            return mav;
-        } catch (IOException e) {
-            mav.setViewName("department/createSiteApplicationDefault");
-            mav.addObject("图片上传失败");
-            return mav;
+        if (file != null) {
+            String fileName = file.getOriginalFilename();
+            String path = "e:graduateproject/src/main/resources/static/img/upload/";
+            File dest = new File(path + fileName);
+            siteApplication.setImgName(fileName);
+            try {
+                file.transferTo(dest);
+            } catch (IllegalStateException e) {
+                mav.setViewName("department/createSiteApplicationDefault");
+                mav.addObject("图片上传失败");
+                return mav;
+            } catch (IOException e) {
+                mav.setViewName("department/createSiteApplicationDefault");
+                mav.addObject("图片上传失败");
+                return mav;
+            }
         }
         int row = 2;
         try {
             row = this.departmentService.createSiteApplication(siteApplication, siteName);
-        }   catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             LOGGER.info("Create site application error");
         }
         if (row == 0) {
@@ -288,7 +285,7 @@ public class GraduateProjectREST {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.getSession(true);
         Session session = currentUser.getSession();
-        String departmentID = (String)session.getAttribute("userID");
+        String departmentID = (String) session.getAttribute("userID");
         int pageNumber = 1;
         if (StringUtils.isNotBlank(request.getParameter("pageNumber"))) {
             pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
@@ -303,13 +300,6 @@ public class GraduateProjectREST {
     public ModelAndView siteApplicationInstruction() {
         return new ModelAndView("department/siteApplicationInstruction");
     }
-
-
-
-
-
-
-
 
 
     //场地管理员
@@ -331,7 +321,7 @@ public class GraduateProjectREST {
         return new ModelAndView("siteManager/createUser");
     }
 
-    @RequestMapping(value = "siteManager/createUser", method=RequestMethod.POST)
+    @RequestMapping(value = "siteManager/createUser", method = RequestMethod.POST)
     public ModelAndView createUser(HttpServletRequest request) {
         User user = new User();
         user.setUserID(request.getParameter("userID"));
@@ -398,21 +388,6 @@ public class GraduateProjectREST {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @RequiresRoles("admin")
     @RequestMapping("permissionTest")
     public ModelAndView permissionTest() {
@@ -421,10 +396,11 @@ public class GraduateProjectREST {
         return mav;
     }
 
-    @RequestMapping(value = "test",method = RequestMethod.GET)
+    @RequestMapping(value = "test", method = RequestMethod.GET)
     public ModelAndView test() {
         return new ModelAndView("test");
     }
+
     @RequestMapping("test")
     public String test(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request) {
         if (file.isEmpty()) {
@@ -432,7 +408,7 @@ public class GraduateProjectREST {
         }
         String fileName = file.getOriginalFilename();
         String path = "e:graduateproject/src/main/resources/static/img/upload/";
-        File dest = new File(path+fileName);
+        File dest = new File(path + fileName);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }

@@ -62,16 +62,16 @@ public class DepartmentDaoImpl implements DepartmentDao{
         String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
                 "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
-                "where siteInfo.locale = ? and status = '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
+                "where siteInfo.locale LIKE ? and status = '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
         String sql2 = "select count(*) from (siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID)inner join user on siteApplication.departmentID = user.userID " +
-                "where siteInfo.locale = ? and status = '待审批'";
+                "where siteInfo.locale LIKE ? and status = '待审批'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{locale, (pageNumber-1)*pageSize, pageSize});
-            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale}, Integer.class);
+            list = jdbcTemplate.queryForList(sql1, new Object[]{"%"+locale+"%", (pageNumber-1)*pageSize, pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{"%"+locale+"%"}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -122,18 +122,18 @@ public class DepartmentDaoImpl implements DepartmentDao{
         String sql1 = "select siteApplication.applicationID, user.userName, siteApplication.activityName, " +
                 "siteInfo.siteName, siteApplication.beginTime,siteApplication.status from (siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID) inner join user on siteApplication.departmentID = user.userID " +
-                "where siteInfo.locale = ? and beginTime between ? and ? " +
+                "where siteInfo.locale LIKE ? and beginTime between ? and ? " +
                 "and status = '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
         String sql2 = "select count(*) from (siteapplication inner join siteInfo on " +
                 "siteapplication.siteID = siteInfo.siteID) inner join user on siteApplication.departmentID = user.userID " +
-                "where siteInfo.locale = ? and beginTime between ? and ? " +
+                "where siteInfo.locale LIKE ? and beginTime between ? and ? " +
                 "and status = '待审批' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
         try {
-            list = jdbcTemplate.queryForList(sql1, new Object[]{locale,beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
-            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{locale,beginTime1, beginTime2}, Integer.class);
+            list = jdbcTemplate.queryForList(sql1, new Object[]{"%"+locale+"%",beginTime1, beginTime2, (pageNumber-1)*pageSize, pageSize});
+            tempPageCount = this.jdbcTemplate.queryForObject(sql2, new Object[]{"%"+locale+"%",beginTime1, beginTime2}, Integer.class);
 
         } catch (EmptyResultDataAccessException e) {
             return null;

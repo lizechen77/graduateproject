@@ -49,7 +49,9 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
                 "(siteApplication inner join user on siteApplication.departmentID = user.userID) " +
                 "inner join siteInfo on siteApplication.siteID = siteInfo.siteID where" +
                 " status = '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
-        String sql2 = "select count(*) from siteApplication where status = '待审批' ";
+        String sql2 = "select count(*) from (siteApplication inner join user on siteApplication.departmentID = user.userID) " +
+                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID where" +
+                " status = '待审批' ";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
@@ -77,7 +79,9 @@ public class SiteManagerDaoImpl implements SiteManagerDao{
                 "from (siteApplication inner join user on siteApplication.departmentID = user.userID) " +
                 "inner join siteInfo on siteApplication.siteID = siteInfo.siteID " +
                 "where status <> '待审批' ORDER BY siteapplication.applicationID ASC LIMIT ?,?";
-        String sql2 = "select count(*) from siteApplication where status <> '待审批'";
+        String sql2 = "select count(*) from (siteApplication inner join user on siteApplication.departmentID = user.userID) " +
+                "inner join siteInfo on siteApplication.siteID = siteInfo.siteID " +
+                "where status <> '待审批'";
         List<Map<String, Object>> list;
         Integer tempPageCount;
         int pageCount;
