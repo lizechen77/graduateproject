@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-	<title>首页</title>
+	<title>首页111</title>
 	<link rel="stylesheet" href="../code/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"/>
 	<style>
 		.carousel-inner .item{
@@ -42,7 +42,7 @@
 		</div>
 	</div>
 	<!-- 轮播器-->
-	<div id="myCarousel" class="carousel slide" style="width:100%;margin:0px;padding:0px;">
+	<div id="myCarousel" class="carousel slide" style="width: 100%; height: 450px;margin:0px">
 		<ol class="carousel-indicators">
 			<li data-target="#myCarousel" data-slide-to="0" class="active">
 			</li>
@@ -51,38 +51,38 @@
 			<li data-target="#myCarousel" data-slide-to="2">
 			</li>
 		</ol>
-		<div class="carousel-inner">
-			<div class="item active">
+		<div class="carousel-inner" style="height: 100%">
+			<div class="item active" style="height: 100%">
 				<a href="http://www.baidu.com" target="blank">
-					<img th:src="'img/upload/' + ${page.getList().get(0).imgName}" width="100%" margin="0px" padding="0" alt="第一张" />
+					<img class="img-thumbnail" th:src="'img/upload/'+${page.getList().get(0).imgName}" style="height: auto;max-height:100%;width: 100%" alt="第一张" />
 					<div class="carousel-caption">
-						<h3>你使用，我设计 ---第四届电子商务“创新、创意及创业”大赛决赛</h3>
+						<h3 th:text="${page.getList().get(0).activityName}">h3</h3>
 					</div>
 				</a>
 			</div>
-			<div class="item">
+			<div class="item" style="height: 100%">
 				<a href="http://www.sina.com" target="blank">
-					<img th:src="@{img/activity.JPG}" width="100%" margin="0px" padding="0" alt="第二张" />
+					<img class="img-thumbnail" th:src="'img/upload/'+${page.getList().get(1).imgName}" style="height: auto;max-height:100%;width: 100%" alt="第二张" />
 					<div class="carousel-caption">
-						<h3>湘潭大学校园十佳歌手大赛</h3>
+						<h3 th:text="${page.getList().get(1).activityName}">湘潭大学校园十佳歌手大赛</h3>
 					</div>
 				</a>
 			</div>
-			<div class="item">
+			<div class="item" style="height: 100%">
 				<a href="http://www.hao123.com" target="blank">
-					<img th:src="@{img/1.JPG}" width="100%" margin="0px" padding="0" alt="第三张" />
+					<img th:src="'img/upload/'+${page.getList().get(2).imgName}" style="height: auto;max-height:100%;width: 100%" alt="第三张" />
 					<div class="carousel-caption">
-						<h3>商学院辩论赛</h3>
+						<h3 th:text="${page.getList().get(2).activityName}">商学院辩论赛</h3>
 					</div>
 				</a>
 			</div>
 		</div>
-		<a href="#myCarousel" data-slide="prev" class="carousel-control left" style="line-height:500px">&lsaquo;</a>
-		<a href="#myCarousel" data-slide="next" class="carousel-control right" style="line-height:500px">&rsaquo;</a>
+		<a href="#myCarousel" data-slide="prev" class="carousel-control left" style="padding-top: 150px">&lsaquo;</a>
+		<a href="#myCarousel" data-slide="next" class="carousel-control right" style="padding-top: 150px">&rsaquo;</a>
 	</div>
 	<br />
 	<!-- 活动分类框-->
-	<div style="margin-bottom:500px">
+	<div  class="container" style="margin:0px; width: 100%">
 		<!--第一个-->
 		<div class="panel panel-default col-md-7 col-md-offset-3">
 			<div class="panel-heading" style="text-align: center">
@@ -111,7 +111,7 @@
 				      	</div>
 
 				      	<div class="modal-footer" style="padding:32px">
-				        	<form th:action="@{/login}" class="form col-md-10 form-horizontal center-block" method="post">
+				        	<form th:action="@{/index}" class="form col-md-10 form-horizontal center-block" method="post">
 					          	<div class="form-group">
 					          		<label class="col-sm-4 control-label">账号</label>
 					          		<div class="col-sm-8">
@@ -148,6 +148,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div>
 		<footer id="footer" class="text-muted">
 			<div class="container">

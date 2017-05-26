@@ -33,24 +33,22 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CurrentPage findSiteApplicationInfo(String departmentID, String locale, Date beginTime1, Date beginTime2, int pageNumber) {
+        LOGGER.info("Finding Site Application, departmentID = {}, locale = {}, begainTime1 = {}, begainTime2 = {}, " +
+                "pageNumber = {}", departmentID, locale, beginTime1, beginTime2, pageNumber);
         CurrentPage page;
         if (StringUtils.isNotBlank(departmentID)) {
-            LOGGER.info("Finding site application by departmentID......");
             page = this.departmentDao.findSiteApplicationByDepartmentID(departmentID, pageNumber);
             return page;
         }
         if (StringUtils.isNotBlank(locale)) {
             if(beginTime1 != null && beginTime2 != null) {
-                LOGGER.info("Finding site application by locale and beginTime......");
                 page = this.departmentDao.findSiteApplicationByLocaleAndBeginTime(locale, beginTime1, beginTime2, pageNumber);
                 return page;
             }
-            LOGGER.info("Finding site application by locale......");
             page = this.departmentDao.findSiteApplicationByLocale(locale, pageNumber);
             return page;
         }
         if (beginTime1 != null && beginTime2 != null) {
-            LOGGER.info("Finding site application by beginTime......");
             page = this.departmentDao.findSiteApplicationByBeginTime(beginTime1, beginTime2, pageNumber);
             return page;
         }
@@ -60,6 +58,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Integer createSiteApplication(SiteApplication siteApplication, String siteName) {
+        LOGGER.info("Creating site application, siteName = {}", siteName);
         SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteName(siteName);
         if (siteInfo == null) {
             LOGGER.info("场地信息不存在");

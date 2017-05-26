@@ -78,7 +78,7 @@ public class GraduateProjectREST {
         return mav;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         String userID = request.getParameter("userID");
@@ -189,7 +189,7 @@ public class GraduateProjectREST {
     }
 
     @RequestMapping(value = "department/createSiteApplication", method = RequestMethod.POST)
-    public ModelAndView createSiteApplication(MultipartFile file, HttpServletRequest request) {
+    public ModelAndView createSiteApplication(@RequestParam("img")MultipartFile file, HttpServletRequest request) {
         LOGGER.info("正在创建场地申请表");
         Date beginTime;
         Date endTime;
@@ -214,19 +214,21 @@ public class GraduateProjectREST {
         ModelAndView mav = new ModelAndView();
         //文件上传
         if (file != null) {
+            LOGGER.info("file not null");
             String fileName = file.getOriginalFilename();
-            String path = "e:graduateproject/src/main/resources/static/img/upload/";
+            String path = "e:/graduateproject/src/main/resources/static/img/upload/";
             File dest = new File(path + fileName);
             siteApplication.setImgName(fileName);
             try {
                 file.transferTo(dest);
             } catch (IllegalStateException e) {
                 mav.setViewName("department/createSiteApplicationDefault");
-                mav.addObject("图片上传失败");
+                mav.addObject("info", "图片上传失败1");
                 return mav;
             } catch (IOException e) {
+                LOGGER.info("err = {}", e);
                 mav.setViewName("department/createSiteApplicationDefault");
-                mav.addObject("图片上传失败");
+                mav.addObject("info", "图片上传失败2");
                 return mav;
             }
         }
@@ -394,40 +396,6 @@ public class GraduateProjectREST {
         ModelAndView mav = new ModelAndView("permissionTest");
         mav.addObject("role", "admin");
         return mav;
-    }
-
-    @RequestMapping(value = "test", method = RequestMethod.GET)
-    public ModelAndView test() {
-        return new ModelAndView("test");
-    }
-
-    @RequestMapping("test")
-    public String test(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request) {
-        if (file.isEmpty()) {
-            return "文件为空";
-        }
-        String fileName = file.getOriginalFilename();
-        String path = "e:graduateproject/src/main/resources/static/img/upload/";
-        File dest = new File(path + fileName);
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        try {
-
-            file.transferTo(dest);
-
-            return "上传成功";
-
-        } catch (IllegalStateException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-        return "上传失败";
     }
 
 }
