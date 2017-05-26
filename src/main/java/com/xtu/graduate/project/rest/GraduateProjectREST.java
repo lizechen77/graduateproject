@@ -330,15 +330,20 @@ public class GraduateProjectREST {
         user.setPassword(request.getParameter("password"));
         user.setRoleID(request.getParameter("roleID"));
         user.setUserName(request.getParameter("userName"));
-        String info = "";
-        int rows = this.siteManagerService.createUser(user);
         ModelAndView mav = new ModelAndView("siteManager/createUserResult");
-        if (rows == 0) {
-            info = "创建user失败，userID已经存在,3秒后自动跳转";
+        String info = "";
+        if (StringUtils.isBlank(request.getParameter("userName")) || StringUtils.isBlank(request.getParameter("userID"))) {
+            info = "创建用户失败，用户账号或者用户名为空,3秒后自动跳转";
             mav.addObject("info", info);
             return mav;
         }
-        info = "创建user成功，3秒后自动跳转";
+        int rows = this.siteManagerService.createUser(user);
+        if (rows == 0) {
+            info = "创建用户失败，用户账号或者用户名已经存在,3秒后自动跳转";
+            mav.addObject("info", info);
+            return mav;
+        }
+        info = "创建用户成功，3秒后自动跳转";
         mav.addObject("info", info);
         return mav;
     }

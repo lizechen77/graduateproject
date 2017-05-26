@@ -9,6 +9,7 @@ import com.xtu.graduate.project.domains.User;
  */
 public interface CommonService {
     User findUserByUserID(String userID);
+    User findUserByUserName(String userName);
     SiteInfo findSiteInfoBySiteID(String siteID);
     Integer changePassword(String userID, String oldPassword, String newPassword);
     SiteInfo findSiteInfoBySiteName(String siteName);

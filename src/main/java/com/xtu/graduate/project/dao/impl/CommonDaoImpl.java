@@ -47,6 +47,28 @@ public class CommonDaoImpl implements CommonDao{
     }
 
     @Override
+    public User findUserByUserName(final String userName) {
+        String sql = "select * from user where userName=?";
+        User user;
+        try {
+            user = (User)jdbcTemplate.queryForObject(sql, new Object[]{userName},
+                    new RowMapper<User>() {
+                        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                            User tempUser = new User();
+                            tempUser.setUserID(rs.getString("userID"));
+                            tempUser.setPassword(rs.getString("password"));
+                            tempUser.setRoleID(rs.getString("roleID"));
+                            tempUser.setUserName(userName);
+                            return tempUser;
+                        }
+                    });
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
+
+    @Override
     public SiteInfo findSiteInfoBySiteID(final String siteID) {
         String sql = "select * from siteInfo where siteID = ?";
         SiteInfo siteInfo;

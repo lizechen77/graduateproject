@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public interface CommonDao {
     User findUserByUserID(String userID);
+    User findUserByUserName(String userName);
     SiteInfo findSiteInfoBySiteID(String SiteID);
     Integer changePassword(String userID, String oldPassword, String newPassword);
     SiteInfo findSiteInfoBySiteName(String siteName);

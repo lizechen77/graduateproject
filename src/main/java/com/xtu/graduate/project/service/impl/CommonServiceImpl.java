@@ -27,6 +27,11 @@ public class CommonServiceImpl implements CommonService{
         return user;
     }
 
+    public User findUserByUserName(String userName) {
+        User user = this.commonDao.findUserByUserName(userName);
+        return user;
+    }
+
     @Override
     public SiteInfo findSiteInfoBySiteID(String siteID) {
         SiteInfo siteInfo = this.commonDao.findSiteInfoBySiteID(siteID);
